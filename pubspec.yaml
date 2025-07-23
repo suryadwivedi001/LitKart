@@ -1,0 +1,59 @@
+name: online_groceries
+description: A new Flutter project.
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.0 <4.0.0' # Compatible with Flutter 3.13+
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+  fl_country_code_picker: ^0.1.5
+  flutter_rating_bar: ^4.0.1
+  get: ^4.6.5
+  http: ^1.1.0
+  shared_preferences: ^2.2.0
+  intl: ^0.20.2
+  flutter_timezone: ^4.1.1
+  flutter_easyloading: ^3.0.5
+  cached_network_image: ^3.2.3
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/img/
+
+  fonts:
+    - family: HKGrotesk
+      fonts:
+        - asset: assets/font/HKGrotesk-Regular.otf
+        - asset: assets/font/HKGrotesk-Bold.otf
+          weight: 700
+    - family: Gilroy
+      fonts:
+        - asset: assets/font/Gilroy-Regular.ttf
+        - asset: assets/font/Gilroy-Medium.ttf
+          weight: 500
+        - asset: assets/font/Gilroy-SemiBold.ttf
+          weight: 600
+        - asset: assets/font/Gilroy-Bold.ttf
+          weight: 700
+    - family: Airbnb Cereald
+      fonts:
+        - asset: assets/font/Airbnb-Cereald-Medium.otf
+    - family: Sveningsson
+      fonts:
+        - asset: assets/font/Sveningsson.ttf
