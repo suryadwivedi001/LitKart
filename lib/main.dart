@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
       title: 'Online Groceries',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        fontFamily: "Gilroy",
+        fontFamily: "Inter",
         colorScheme: ColorScheme.fromSeed(seedColor: TColor.primary),
         useMaterial3: false,
       ),
