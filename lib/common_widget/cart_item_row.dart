@@ -52,8 +52,8 @@ class CartItemRow extends StatelessWidget {
                                 cObj.name ?? "",
                                 style: TextStyle(
                                     color: TColor.primaryText,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w700),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400),
                               ),
                             ),
                             InkWell(
@@ -74,8 +74,8 @@ class CartItemRow extends StatelessWidget {
                          "${cObj.unitValue}${cObj.unitName} Price",
                           style: TextStyle(
                               color: TColor.secondaryText,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500),
+                              fontSize: 13,
+                              fontWeight: FontWeight.w300),
                         ),
 
                         const SizedBox(
@@ -111,8 +111,8 @@ class CartItemRow extends StatelessWidget {
                               (cObj.qty ?? 0 ).toString(),
                               style: TextStyle(
                                   color: TColor.primaryText,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400),
                             ),
                             const SizedBox(
                               width: 15,
@@ -143,8 +143,8 @@ class CartItemRow extends StatelessWidget {
                               "\$${ (cObj.totalPrice ?? 0).toStringAsFixed(2) }",
                               style: TextStyle(
                                   color: TColor.primaryText,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600),
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w400),
                             ),
                           ],
                         )

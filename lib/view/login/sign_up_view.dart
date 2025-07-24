@@ -65,7 +65,7 @@ class _SignUpViewState extends State<SignUpView> {
                     style: TextStyle(
                         color: TColor.primaryText,
                         fontSize: 26,
-                        fontWeight: FontWeight.w600),
+                        fontWeight: FontWeight.w400),
                   ),
                   SizedBox(
                     height: media.width * 0.03,
@@ -74,8 +74,8 @@ class _SignUpViewState extends State<SignUpView> {
                     "Enter your credentials to continue",
                     style: TextStyle(
                         color: TColor.secondaryText,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w300),
                   ),
                   SizedBox(
                     height: media.width * 0.1,
@@ -119,16 +119,16 @@ class _SignUpViewState extends State<SignUpView> {
                     text: TextSpan(
                       style: TextStyle(
                           color: TColor.secondaryText,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500),
+                          fontSize: 13,
+                          fontWeight: FontWeight.w300),
                       children: [
                         const TextSpan(text: "By continuing you agree to our "),
                         TextSpan(
                             text: "Terms of Service",
                             style: TextStyle(
                                 color: TColor.primary,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500),
+                                fontSize: 13,
+                                fontWeight: FontWeight.w300),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
                                 print("Terms of Service Click");
@@ -138,8 +138,8 @@ class _SignUpViewState extends State<SignUpView> {
                             text: "Privacy Policy.",
                             style: TextStyle(
                                 color: TColor.primary,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500),
+                                fontSize: 13,
+                                fontWeight: FontWeight.w300),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
                                 print("Privacy Policy Click");
@@ -173,8 +173,8 @@ class _SignUpViewState extends State<SignUpView> {
                                 "Already have an account?",
                                 style: TextStyle(
                                     color: TColor.primaryText,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600),
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w400),
                               ),
                               const SizedBox(
                                 width: 8,
@@ -183,8 +183,8 @@ class _SignUpViewState extends State<SignUpView> {
                                 "Sign In",
                                 style: TextStyle(
                                     color: TColor.primary,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600),
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w400),
                               ),
                             ],
                           ))

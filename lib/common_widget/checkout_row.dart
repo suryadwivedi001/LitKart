@@ -24,8 +24,8 @@ class CheckoutRow extends StatelessWidget {
                   title,
                   style: TextStyle(
                       color: TColor.secondaryText,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600),
+                      fontSize: 15,
+                      fontWeight: FontWeight.w400),
                 ),
                 Expanded(
                   child: Text(
@@ -33,8 +33,8 @@ class CheckoutRow extends StatelessWidget {
                     textAlign: TextAlign.end,
                     style: TextStyle(
                         color: TColor.primaryText,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400),
                   ),
                 ),
 

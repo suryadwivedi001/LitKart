@@ -36,8 +36,8 @@ class _MyCartViewState extends State<MyCartView> {
           "My Cart",
           style: TextStyle(
               color: TColor.primaryText,
-              fontSize: 20,
-              fontWeight: FontWeight.w700),
+              fontSize: 16,
+              fontWeight: FontWeight.w400),
         ),
       ),
       backgroundColor: Colors.white,
@@ -99,8 +99,8 @@ class _MyCartViewState extends State<MyCartView> {
                                     "Go to Checkout",
                                     style: TextStyle(
                                         color: Colors.white,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w600),
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w400),
                                   ),
                                 ],
                               ),
@@ -115,8 +115,8 @@ class _MyCartViewState extends State<MyCartView> {
                                   "\$${cartVM.cartTotalPrice.value}",
                                   style: const TextStyle(
                                       color: Colors.white,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w600),
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w400),
                                 ),
                               ),
                             ],
@@ -126,8 +126,8 @@ class _MyCartViewState extends State<MyCartView> {
                           "Your Card is Empty",
                           style: TextStyle(
                               color: TColor.primaryText,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400),
                         ),
                 ],
               ),

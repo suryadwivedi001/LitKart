@@ -66,7 +66,7 @@ class _SignInViewState extends State<SignInView> {
                         style: TextStyle(
                             color: TColor.primaryText,
                             fontSize: 26,
-                            fontWeight: FontWeight.w600),
+                            fontWeight: FontWeight.w400),
                       ),
                     ],
                   ),
@@ -107,8 +107,8 @@ class _SignInViewState extends State<SignInView> {
                 //                   "${countryCode.dialCode}",
                 //                   style: TextStyle(
                 //                       color: TColor.primaryText,
-                //                       fontSize: 18,
-                //                       fontWeight: FontWeight.w600),
+                //                       fontSize: 15,
+                //                       fontWeight: FontWeight.w400),
                 //                 ),
                 //                 const SizedBox(
                 //                   width: 15,
@@ -164,8 +164,8 @@ class _SignInViewState extends State<SignInView> {
                   "Or connect with social media",
                   style: TextStyle(
                       color: TColor.secondaryText,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600),
+                      fontSize: 13,
+                      fontWeight: FontWeight.w400),
                 ),
                 const SizedBox(
                   height: 25,

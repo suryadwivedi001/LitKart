@@ -44,8 +44,8 @@ class _PromoCodeViewState extends State<PromoCodeView> {
             "Promo Code",
             style: TextStyle(
                 color: TColor.primaryText,
-                fontSize: 20,
-                fontWeight: FontWeight.w700),
+                fontSize: 16,
+                fontWeight: FontWeight.w400),
           ),
          ),
       backgroundColor: Colors.white,
@@ -56,8 +56,8 @@ class _PromoCodeViewState extends State<PromoCodeView> {
                   "No Any Promo Code Available",
                   style: TextStyle(
                       color: TColor.primaryText,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400),
                 ),
               )
             :  ListView.separated(

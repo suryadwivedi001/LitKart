@@ -48,7 +48,7 @@ class ErrorView extends StatelessWidget {
             style: TextStyle(
                 color: TColor.primaryText,
                 fontSize: 28,
-                fontWeight: FontWeight.w600),
+                fontWeight: FontWeight.w400),
           ),
           const SizedBox(
             height: 20,
@@ -58,8 +58,8 @@ class ErrorView extends StatelessWidget {
             textAlign: TextAlign.center,
             style: TextStyle(
                 color: TColor.secondaryText,
-                fontSize: 16,
-                fontWeight: FontWeight.w500),
+                fontSize: 14,
+                fontWeight: FontWeight.w300),
           ),
 
           const SizedBox(
@@ -75,8 +75,8 @@ class ErrorView extends StatelessWidget {
               textAlign: TextAlign.left,
               style: TextStyle(
                   color: TColor.primaryText,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600),
+                  fontSize: 15,
+                  fontWeight: FontWeight.w400),
             ),
           )
         ],

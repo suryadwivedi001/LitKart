@@ -38,8 +38,8 @@ class AddressRow extends StatelessWidget {
                             aObj.name ?? "",
                             style: TextStyle(
                                 color: TColor.primaryText,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w700),
+                                fontSize: 13,
+                                fontWeight: FontWeight.w400),
                           ),
                         ),
                         Container(
@@ -52,8 +52,8 @@ class AddressRow extends StatelessWidget {
                             aObj.typeName ?? "Home",
                             style: TextStyle(
                                 color: TColor.secondaryText,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700),
+                                fontSize: 11,
+                                fontWeight: FontWeight.w400),
                           ),
                         )
                       ],
@@ -66,8 +66,8 @@ class AddressRow extends StatelessWidget {
                       textAlign: TextAlign.left,
                       style: TextStyle(
                           color: TColor.primaryText,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500),
+                          fontSize: 13,
+                          fontWeight: FontWeight.w300),
                     ),
                     const SizedBox(
                       height: 8,
@@ -77,8 +77,8 @@ class AddressRow extends StatelessWidget {
                       textAlign: TextAlign.left,
                       style: TextStyle(
                           color: TColor.secondaryText,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500),
+                          fontSize: 11,
+                          fontWeight: FontWeight.w300),
                     ),
                   ],
                 ),

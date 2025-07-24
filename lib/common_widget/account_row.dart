@@ -38,8 +38,8 @@ class AccountRow extends StatelessWidget {
                     textAlign: TextAlign.left,
                     style: TextStyle(
                         color: TColor.primaryText,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600),
+                        fontSize: 15,
+                        fontWeight: FontWeight.w400),
                   ),
                 ),
                 const SizedBox(

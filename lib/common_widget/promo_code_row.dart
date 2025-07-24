@@ -34,8 +34,8 @@ class PromoCodeRow extends StatelessWidget {
                             pObj.title ?? "",
                             style: TextStyle(
                                 color: TColor.primaryText,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w700),
+                                fontSize: 13,
+                                fontWeight: FontWeight.w400),
                           ),
                         ),
                         Container(
@@ -49,7 +49,7 @@ class PromoCodeRow extends StatelessWidget {
                             style: TextStyle(
                                 color: TColor.primary,
                                 fontSize: 15,
-                                fontWeight: FontWeight.w700),
+                                fontWeight: FontWeight.w400),
                           ),
                         )
                       ],
@@ -61,8 +61,8 @@ class PromoCodeRow extends StatelessWidget {
                       pObj.description ?? "",
                       style: TextStyle(
                           color: TColor.secondaryText,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500),
+                          fontSize: 13,
+                          fontWeight: FontWeight.w300),
                     ),
     
                     const SizedBox(
@@ -75,8 +75,8 @@ class PromoCodeRow extends StatelessWidget {
                          "Expiry Date:",
                           style: TextStyle(
                               color: TColor.primary,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700),
+                              fontSize: 13,
+                              fontWeight: FontWeight.w400),
                         ),
     
                         const SizedBox(width: 8,),
@@ -84,8 +84,8 @@ class PromoCodeRow extends StatelessWidget {
                           pObj.endDate ?? "",
                           style: TextStyle(
                               color: TColor.secondaryText,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500),
+                              fontSize: 11,
+                              fontWeight: FontWeight.w300),
                         ),
                       ],
                     )

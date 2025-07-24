@@ -44,8 +44,8 @@ class _MyOrdersViewState extends State<MyOrdersView> {
           "My Orders",
           style: TextStyle(
               color: TColor.primaryText,
-              fontSize: 20,
-              fontWeight: FontWeight.w700),
+              fontSize: 16,
+              fontWeight: FontWeight.w400),
         ),
       ),
       backgroundColor: Colors.white,
@@ -55,8 +55,8 @@ class _MyOrdersViewState extends State<MyOrdersView> {
                   "No Any Order Place",
                   style: TextStyle(
                       color: TColor.primaryText,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400),
                 ),
         ) :  ListView.builder(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),

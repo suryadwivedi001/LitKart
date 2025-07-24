@@ -26,8 +26,8 @@ class Dropdown extends StatelessWidget {
           title,
           style: TextStyle(
               color: TColor.textTittle,
-              fontSize: 16,
-              fontWeight: FontWeight.w600),
+              fontSize: 14,
+              fontWeight: FontWeight.w400),
         ),
         SizedBox(
           height: 55,
@@ -43,8 +43,8 @@ class Dropdown extends StatelessWidget {
                   placeholder,
                   style: TextStyle(
                       color: TColor.placeholder,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400),
                 ),
                 isExpanded: true,
                 items: valueList.map((obj) {
@@ -54,8 +54,8 @@ class Dropdown extends StatelessWidget {
                         obj.toString(),
                         style: TextStyle(
                             color: TColor.primaryText,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400),
                       ));
                 }).toList()),
           ),

@@ -102,7 +102,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                           style: TextStyle(
                               color: TColor.primaryText,
                               fontSize: 24,
-                              fontWeight: FontWeight.w700),
+                              fontWeight: FontWeight.w400),
                         ),
                       ),
                       Obx(
@@ -125,8 +125,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                     "${detailVM.pObj.unitValue ?? ""}${detailVM.pObj.unitName ?? ""}, Price",
                     style: TextStyle(
                         color: TColor.secondaryText,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400),
                   ),
                   const SizedBox(
                     height: 15,
@@ -161,8 +161,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                               detailVM.qty.value.toString(),
                               style: TextStyle(
                                   color: TColor.primaryText,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600),
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w400),
                             )),
                       ),
                       InkWell(
@@ -185,7 +185,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                           style: TextStyle(
                               color: TColor.primaryText,
                               fontSize: 24,
-                              fontWeight: FontWeight.w700),
+                              fontWeight: FontWeight.w400),
                         ),
                       ),
                     ],
@@ -207,8 +207,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                           "Product Detail",
                           style: TextStyle(
                               color: TColor.primaryText,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400),
                         ),
                       ),
                       Obx(
@@ -232,8 +232,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                           detailVM.pObj.detail ?? "",
                           style: TextStyle(
                               color: TColor.secondaryText,
-                              fontSize: 13,
-                              fontWeight: FontWeight.w500),
+                              fontSize: 12,
+                              fontWeight: FontWeight.w300),
                         )
                       : Container()),
                   const SizedBox(
@@ -253,8 +253,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                           "Nutritions",
                           style: TextStyle(
                               color: TColor.primaryText,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400),
                         ),
                       ),
                       Container(
@@ -270,7 +270,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                           style: TextStyle(
                               color: TColor.secondaryText,
                               fontSize: 9,
-                              fontWeight: FontWeight.w600),
+                              fontWeight: FontWeight.w400),
                         ),
                       ),
                       Obx(
@@ -305,14 +305,14 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   style: TextStyle(
                                       color: TColor.secondaryText,
                                       fontSize: 15,
-                                      fontWeight: FontWeight.w600),
+                                      fontWeight: FontWeight.w400),
                                 ),
                                 Text(
                                   nObj.nutritionValue ?? "",
                                   style: TextStyle(
                                       color: TColor.primaryText,
                                       fontSize: 15,
-                                      fontWeight: FontWeight.w600),
+                                      fontWeight: FontWeight.w400),
                                 )
                               ],
                             );
@@ -340,8 +340,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                           "Review",
                           style: TextStyle(
                               color: TColor.primaryText,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400),
                         ),
                       ),
                       IgnorePointer(
@@ -394,7 +394,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             //   style: TextStyle(
             //       color: TColor.primaryText,
             //       fontSize: 26,
-            //       fontWeight: FontWeight.w600),
+            //       fontWeight: FontWeight.w400),
             // ),
             // SizedBox(
             //   height: media.width * 0.03,
@@ -403,8 +403,8 @@ class _ProductDetailsState extends State<ProductDetails> {
             //   "Enter your emails and password",
             //   style: TextStyle(
             //       color: TColor.secondaryText,
-            //       fontSize: 16,
-            //       fontWeight: FontWeight.w500),
+            //       fontSize: 14,
+            //       fontWeight: FontWeight.w300),
             // ),
             // SizedBox(
             //   height: media.width * 0.1,

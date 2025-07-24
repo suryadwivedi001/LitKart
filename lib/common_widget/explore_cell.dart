@@ -55,8 +55,8 @@ class ExploreCell extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                   color: TColor.primaryText,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400),
             ),
 
             const Spacer(),

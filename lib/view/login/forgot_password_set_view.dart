@@ -63,7 +63,7 @@ class _ForgotPasswordSetViewState extends State<ForgotPasswordSetView> {
                     style: TextStyle(
                         color: TColor.primaryText,
                         fontSize: 26,
-                        fontWeight: FontWeight.w600),
+                        fontWeight: FontWeight.w400),
                   ),
                   SizedBox(
                     height: media.width * 0.03,
@@ -72,8 +72,8 @@ class _ForgotPasswordSetViewState extends State<ForgotPasswordSetView> {
                     "Enter your new password",
                     style: TextStyle(
                         color: TColor.secondaryText,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w300),
                   ),
                   SizedBox(
                     height: media.width * 0.1,

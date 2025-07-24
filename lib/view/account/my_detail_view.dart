@@ -56,8 +56,8 @@ class _MyDetailViewState extends State<MyDetailView> {
           "My Details",
           style: TextStyle(
               color: TColor.primaryText,
-              fontSize: 20,
-              fontWeight: FontWeight.w700),
+              fontSize: 16,
+              fontWeight: FontWeight.w400),
         ),
       ),
       backgroundColor: Colors.white,
@@ -89,8 +89,8 @@ class _MyDetailViewState extends State<MyDetailView> {
                         "Mobile Number",
                         style: TextStyle(
                             color: TColor.textTittle,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400),
                       ),
                       TextField(
                         controller: detailVM.txtMobile.value,
@@ -122,8 +122,8 @@ class _MyDetailViewState extends State<MyDetailView> {
                                   countryCode.dialCode,
                                   style: TextStyle(
                                       color: TColor.primaryText,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600),
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w400),
                                 ),
                                 const SizedBox(
                                   width: 15,
@@ -169,8 +169,8 @@ class _MyDetailViewState extends State<MyDetailView> {
                   "Change Password",
                   style: TextStyle(
                       color: TColor.primary,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700),
+                      fontSize: 15,
+                      fontWeight: FontWeight.w400),
                 ),
               )
             ],

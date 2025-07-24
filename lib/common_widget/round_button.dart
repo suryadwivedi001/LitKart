@@ -20,7 +20,7 @@ class RoundButton extends StatelessWidget {
       child: Text(
         title,
         style: const TextStyle(
-            color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
+            color: Colors.white, fontSize: 15, fontWeight: FontWeight.w400),
       ),
     );
   }
@@ -57,7 +57,7 @@ class RoundIconButton extends StatelessWidget {
           Text(
             title,
             style: const TextStyle(
-                color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
+                color: Colors.white, fontSize: 15, fontWeight: FontWeight.w400),
           ),
         ],
       ),

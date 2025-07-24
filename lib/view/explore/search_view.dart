@@ -127,8 +127,8 @@ class _SearchViewState extends State<SearchView> {
                   hintText: "Search Store",
                   hintStyle: TextStyle(
                       color: TColor.secondaryText,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600),
+                      fontSize: 13,
+                      fontWeight: FontWeight.w400),
                 ),
               ),
             ),

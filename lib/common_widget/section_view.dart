@@ -27,7 +27,7 @@ class SectionView extends StatelessWidget {
             style: TextStyle(
                 color: TColor.primaryText,
                 fontSize: 24,
-                fontWeight: FontWeight.w600),
+                fontWeight: FontWeight.w400),
           ),
           TextButton(
             onPressed: onPressed,
@@ -35,8 +35,8 @@ class SectionView extends StatelessWidget {
               "See All",
               style: TextStyle(
                   color: TColor.primary,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400),
             ),
           )
         ],

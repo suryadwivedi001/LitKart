@@ -31,29 +31,29 @@ class MyOrderRow extends StatelessWidget {
                     "Order No: #",
                     style: TextStyle(
                         color: TColor.primaryText,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400),
                   ),
                   Expanded(
                       child: Text(
                     mObj.orderId?.toString() ?? "",
                     style: TextStyle(
                         color: TColor.primaryText,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400),
                   )),
                   Text(
                     getOrderStatus(mObj),
                     style: TextStyle(
                         color: getOrderStatusColor(mObj),
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400),
                   )
                 ],
               ),
               Text(
                 mObj.createdDate ?? "",
-                style: TextStyle(color: TColor.secondaryText, fontSize: 12),
+                style: TextStyle(color: TColor.secondaryText, fontSize: 11),
               ),
               const SizedBox(
                 height: 8,
@@ -86,16 +86,16 @@ class MyOrderRow extends StatelessWidget {
                                 "Items: ",
                                 style: TextStyle(
                                     color: TColor.primaryText,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w700),
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w400),
                               ),
                               Expanded(
                                 child: Text(
                                   mObj.names ?? "",
                                   style: TextStyle(
                                       color: TColor.secondaryText,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500),
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w300),
                                 ),
                               ),
                             ],
@@ -107,16 +107,16 @@ class MyOrderRow extends StatelessWidget {
                                 "Delivery Type: ",
                                 style: TextStyle(
                                     color: TColor.primaryText,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w700),
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w400),
                               ),
                               Expanded(
                                   child: Text(
                                 getDeliverType(mObj),
                                 style: TextStyle(
                                     color: TColor.primaryText,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500),
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w300),
                               )),
                             ],
                           ),
@@ -127,16 +127,16 @@ class MyOrderRow extends StatelessWidget {
                                 "Payment Type: ",
                                 style: TextStyle(
                                     color: TColor.primaryText,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w700),
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w400),
                               ),
                               Expanded(
                                   child: Text(
                                 getPaymentType(mObj),
                                 style: TextStyle(
                                     color: TColor.primaryText,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500),
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w300),
                               )),
                             ],
                           ),
@@ -147,16 +147,16 @@ class MyOrderRow extends StatelessWidget {
                                 "Payment Status: ",
                                 style: TextStyle(
                                     color: TColor.primaryText,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w700),
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w400),
                               ),
                               Expanded(
                                   child: Text(
                                 getPaymentStatus(mObj),
                                 style: TextStyle(
                                     color: getPaymentStatusColor(mObj),
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w700),
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w400),
                               )),
                             ],
                           ),

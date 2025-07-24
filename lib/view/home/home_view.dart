@@ -65,8 +65,8 @@ class _HomeViewState extends State<HomeView> {
                     "Dhaka, Banassre",
                     style: TextStyle(
                         color: TColor.darkGray,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600),
+                        fontSize: 15,
+                        fontWeight: FontWeight.w400),
                   ),
                 ],
               ),
@@ -99,8 +99,8 @@ class _HomeViewState extends State<HomeView> {
                       hintText: "Search Store",
                       hintStyle: TextStyle(
                           color: TColor.secondaryText,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600),
+                          fontSize: 13,
+                          fontWeight: FontWeight.w400),
                     ),
                   ),
                 ),

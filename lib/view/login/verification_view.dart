@@ -55,7 +55,7 @@ class _VerificationViewState extends State<VerificationView> {
                     style: TextStyle(
                         color: TColor.primaryText,
                         fontSize: 26,
-                        fontWeight: FontWeight.w600),
+                        fontWeight: FontWeight.w400),
                   ),
                   const SizedBox(
                     height: 15,
@@ -78,8 +78,8 @@ class _VerificationViewState extends State<VerificationView> {
                             "Resend Code",
                             style: TextStyle(
                                 color: TColor.primary,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500),
+                                fontSize: 15,
+                                fontWeight: FontWeight.w300),
                           )),
                       InkWell(
                         borderRadius: BorderRadius.circular(30),

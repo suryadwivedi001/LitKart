@@ -53,8 +53,8 @@ class OrderItemRow extends StatelessWidget {
                           pObj.name ?? "",
                           style: TextStyle(
                               color: TColor.primaryText,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400),
                         ),
                         const SizedBox(
                           height: 2,
@@ -63,8 +63,8 @@ class OrderItemRow extends StatelessWidget {
                           "${pObj.unitValue}${pObj.unitName} Price",
                           style: TextStyle(
                               color: TColor.secondaryText,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500),
+                              fontSize: 13,
+                              fontWeight: FontWeight.w300),
                         ),
                         const SizedBox(
                           height: 10,
@@ -75,8 +75,8 @@ class OrderItemRow extends StatelessWidget {
                               "QTY :",
                               style: TextStyle(
                                   color: TColor.primaryText,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400),
                             ),
                             const SizedBox(
                               width: 15,
@@ -85,8 +85,8 @@ class OrderItemRow extends StatelessWidget {
                               (pObj.qty ?? 0).toString(),
                               style: TextStyle(
                                   color: TColor.primaryText,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400),
                             ),
                             const SizedBox(
                               width: 8,
@@ -95,8 +95,8 @@ class OrderItemRow extends StatelessWidget {
                               "×",
                               style: TextStyle(
                                   color: TColor.primaryText,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400),
                             ),
                             const SizedBox(
                               width: 8,
@@ -105,16 +105,16 @@ class OrderItemRow extends StatelessWidget {
                               "\$${(pObj.itemPrice ?? 0).toStringAsFixed(2)}",
                               style: TextStyle(
                                   color: TColor.primaryText,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400),
                             ),
                             const Spacer(),
                             Text(
                               "\$${(pObj.totalPrice ?? 0).toStringAsFixed(2)}",
                               style: TextStyle(
                                   color: TColor.primaryText,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600),
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w400),
                             ),
                           ],
                         )

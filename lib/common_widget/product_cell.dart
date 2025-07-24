@@ -58,8 +58,8 @@ class ProductCell extends StatelessWidget {
               pObj.name ?? "",
               style: TextStyle(
                   color: TColor.primaryText,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400),
             ),
             const SizedBox(
               height: 2,
@@ -68,8 +68,8 @@ class ProductCell extends StatelessWidget {
               "${pObj.unitValue}${pObj.unitName}",
               style: TextStyle(
                   color: TColor.secondaryText,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500),
+                  fontSize: 13,
+                  fontWeight: FontWeight.w300),
             ),
             if ((pObj.avgRating ?? 0.0) > 0.0)
               IgnorePointer(
@@ -95,8 +95,8 @@ class ProductCell extends StatelessWidget {
                   "\$${pObj.offerPrice ?? pObj.price}",
                   style: TextStyle(
                       color: TColor.primaryText,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600),
+                      fontSize: 15,
+                      fontWeight: FontWeight.w400),
                 ),
                 InkWell(
                   onTap: onCart,

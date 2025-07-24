@@ -53,7 +53,7 @@ class _WelcomeViewState extends State<WelcomeView> {
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 48,
-                          fontWeight: FontWeight.w600),
+                          fontWeight: FontWeight.w400),
                     ),
                   ],
                 ),
@@ -65,8 +65,8 @@ class _WelcomeViewState extends State<WelcomeView> {
                       "Ger your groceries in as fast as one hour",
                       style: TextStyle(
                           color: const Color(0xffFCFCFC).withOpacity(0.7),
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w300),
                     ),
                   ],
                 ),

@@ -46,8 +46,8 @@ class _AddressListViewState extends State<AddressListView> {
             "Delivery Address",
             style: TextStyle(
                 color: TColor.primaryText,
-                fontSize: 20,
-                fontWeight: FontWeight.w700),
+                fontSize: 16,
+                fontWeight: FontWeight.w400),
           ),
           actions: [
             IconButton(

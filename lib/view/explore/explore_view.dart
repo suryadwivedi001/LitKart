@@ -38,8 +38,8 @@ class _ExploreViewState extends State<ExploreView> {
           "Find Products",
           style: TextStyle(
               color: TColor.primaryText,
-              fontSize: 20,
-              fontWeight: FontWeight.w700),
+              fontSize: 16,
+              fontWeight: FontWeight.w400),
         ),
       ),
       body: Column(
@@ -77,8 +77,8 @@ class _ExploreViewState extends State<ExploreView> {
                       "Search Store",
                       style: TextStyle(
                           color: TColor.secondaryText,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600),
+                          fontSize: 13,
+                          fontWeight: FontWeight.w400),
                     ),
                   ],
                 ),

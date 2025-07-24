@@ -58,8 +58,8 @@ class CategoryCell extends StatelessWidget {
                     pObj.typeName ?? "",
                     style: TextStyle(
                         color: TColor.primaryText,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400),
                   ),
                 ),
               ],

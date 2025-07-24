@@ -22,8 +22,8 @@ class LineTextField extends StatelessWidget {
           title,
           style: TextStyle(
               color: TColor.textTittle,
-              fontSize: 16,
-              fontWeight: FontWeight.w600),
+              fontSize: 14,
+              fontWeight: FontWeight.w400),
         ),
         TextField(
           controller: controller,

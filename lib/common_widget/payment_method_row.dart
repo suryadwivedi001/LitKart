@@ -46,8 +46,8 @@ class PaymentMethodRow extends StatelessWidget {
                       textAlign: TextAlign.left,
                       style: TextStyle(
                           color: TColor.primaryText,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700),
+                          fontSize: 15,
+                          fontWeight: FontWeight.w400),
                     ),
     
                     const SizedBox(
@@ -60,7 +60,7 @@ class PaymentMethodRow extends StatelessWidget {
                       style: TextStyle(
                           color: TColor.primary,
                           fontSize: 15,
-                          fontWeight: FontWeight.w500),
+                          fontWeight: FontWeight.w300),
                     ),
                     
                     
