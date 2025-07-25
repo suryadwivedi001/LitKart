@@ -23,6 +23,8 @@ class ProductCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Debug print of image URL for each build
+    print('Home/ProductCell: image url = ${pObj.image}');
     return InkWell(
       onTap: onPressed,
       child: Container(
@@ -42,7 +44,7 @@ class ProductCell extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CachedNetworkImage(
-                  imageUrl: "http://192.168.1.13:3001${pObj.image ?? ""}",
+                  imageUrl: "${pObj.image ?? ""}",
                   placeholder: (context, url) => const Center(
                     child: CircularProgressIndicator(),
                   ),
