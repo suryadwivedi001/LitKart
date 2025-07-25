@@ -92,6 +92,7 @@ class SVKey {
   static const svFavorite = '${baseUrl}favorite_list';
   static const svExploreList = '${baseUrl}explore_category_list';
   static const svExploreItemList = '${baseUrl}explore_category_items_list';
+  static const svFetchProducts = '${baseUrl}fetch_products';
 
   static const svAddToCart = '${baseUrl}add_to_cart';
   static const svUpdateCart = '${baseUrl}update_cart';

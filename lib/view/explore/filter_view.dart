@@ -73,7 +73,7 @@ class _FilterViewState extends State<FilterView> {
             "Filters",
             style: TextStyle(
                 color: TColor.primaryText,
-                fontSize: 16,
+                fontSize: 13,
                 fontWeight: FontWeight.w400),
           ),
         ),
@@ -96,7 +96,7 @@ class _FilterViewState extends State<FilterView> {
                           "Categories",
                           style: TextStyle(
                               color: TColor.primaryText,
-                              fontSize: 24,
+                              fontSize: 15,
                               fontWeight: FontWeight.w400),
                         ),
                       ),
@@ -125,7 +125,7 @@ class _FilterViewState extends State<FilterView> {
                           "Brand",
                           style: TextStyle(
                               color: TColor.primaryText,
-                              fontSize: 24,
+                              fontSize: 15,
                               fontWeight: FontWeight.w400),
                         ),
                       ),

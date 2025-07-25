@@ -36,7 +36,7 @@ class _MyCartViewState extends State<MyCartView> {
           "My Cart",
           style: TextStyle(
               color: TColor.primaryText,
-              fontSize: 16,
+              fontSize: 13,
               fontWeight: FontWeight.w400),
         ),
       ),
@@ -126,7 +126,7 @@ class _MyCartViewState extends State<MyCartView> {
                           "Your Card is Empty",
                           style: TextStyle(
                               color: TColor.primaryText,
-                              fontSize: 16,
+                              fontSize: 13,
                               fontWeight: FontWeight.w400),
                         ),
                 ],

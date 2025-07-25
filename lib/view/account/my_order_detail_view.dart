@@ -54,7 +54,7 @@ class _MyOrdersDetailViewState extends State<MyOrdersDetailView> {
           "My Order Detail",
           style: TextStyle(
               color: TColor.primaryText,
-              fontSize: 16,
+              fontSize: 13,
               fontWeight: FontWeight.w400),
         ),
       ),
@@ -85,7 +85,7 @@ class _MyOrdersDetailViewState extends State<MyOrdersDetailView> {
                             "Order ID: #${widget.mObj.orderId}",
                             style: TextStyle(
                                 color: TColor.primaryText,
-                                fontSize: 16,
+                                fontSize: 13,
                                 fontWeight: FontWeight.w400),
                           ),
                         ),
@@ -125,7 +125,7 @@ class _MyOrdersDetailViewState extends State<MyOrdersDetailView> {
                     Text(
                       "${widget.mObj.address ?? ""}, ${widget.mObj.city ?? ""}, ${widget.mObj.state ?? ""}, ${widget.mObj.postalCode} ",
                       style:
-                          TextStyle(color: TColor.secondaryText, fontSize: 14),
+                          TextStyle(color: TColor.secondaryText, fontSize: 13),
                     ),
                     const SizedBox(
                       height: 8,
@@ -136,7 +136,7 @@ class _MyOrdersDetailViewState extends State<MyOrdersDetailView> {
                           "Delivery Type: ",
                           style: TextStyle(
                               color: TColor.primaryText,
-                              fontSize: 14,
+                              fontSize: 13,
                               fontWeight: FontWeight.w400),
                         ),
                         Expanded(
@@ -144,7 +144,7 @@ class _MyOrdersDetailViewState extends State<MyOrdersDetailView> {
                             getDeliverType(widget.mObj),
                             textAlign: TextAlign.end,
                             style: TextStyle(
-                                color: TColor.primaryText, fontSize: 14),
+                                color: TColor.primaryText, fontSize: 13),
                           ),
                         ),
                       ],
@@ -158,7 +158,7 @@ class _MyOrdersDetailViewState extends State<MyOrdersDetailView> {
                           "Payment Type: ",
                           style: TextStyle(
                               color: TColor.primaryText,
-                              fontSize: 14,
+                              fontSize: 13,
                               fontWeight: FontWeight.w400),
                         ),
                         Expanded(
@@ -166,7 +166,7 @@ class _MyOrdersDetailViewState extends State<MyOrdersDetailView> {
                             getPaymentType(widget.mObj),
                             textAlign: TextAlign.end,
                             style: TextStyle(
-                                color: TColor.primaryText, fontSize: 14),
+                                color: TColor.primaryText, fontSize: 13),
                           ),
                         ),
                       ],

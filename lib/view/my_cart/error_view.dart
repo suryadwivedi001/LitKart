@@ -58,7 +58,7 @@ class ErrorView extends StatelessWidget {
             textAlign: TextAlign.center,
             style: TextStyle(
                 color: TColor.secondaryText,
-                fontSize: 14,
+                fontSize: 13,
                 fontWeight: FontWeight.w300),
           ),
 

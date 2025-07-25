@@ -43,7 +43,7 @@ class _CheckoutViewState extends State<CheckoutView> {
                     "Checkout",
                     style: TextStyle(
                         color: TColor.primaryText,
-                        fontSize: 16,
+                        fontSize: 13,
                         fontWeight: FontWeight.w400),
                   ),
                   InkWell(
@@ -195,7 +195,7 @@ class _CheckoutViewState extends State<CheckoutView> {
                           textAlign: TextAlign.end,
                           style: TextStyle(
                               color: TColor.primaryText,
-                              fontSize: 14,
+                              fontSize: 13,
                               fontWeight: FontWeight.w400),
                         ),
                         const SizedBox(
@@ -243,7 +243,7 @@ class _CheckoutViewState extends State<CheckoutView> {
                           "Total",
                           style: TextStyle(
                               color: TColor.secondaryText,
-                              fontSize: 14,
+                              fontSize: 13,
                               fontWeight: FontWeight.w400),
                         ),
                         Expanded(
@@ -252,7 +252,7 @@ class _CheckoutViewState extends State<CheckoutView> {
                             textAlign: TextAlign.end,
                             style: TextStyle(
                                 color: TColor.secondaryText,
-                                fontSize: 13,
+                                fontSize: 12,
                                 fontWeight: FontWeight.w400),
                           ),
                         ),
@@ -267,7 +267,7 @@ class _CheckoutViewState extends State<CheckoutView> {
                           "Delivery Cost",
                           style: TextStyle(
                               color: TColor.secondaryText,
-                              fontSize: 14,
+                              fontSize: 13,
                               fontWeight: FontWeight.w400),
                         ),
                         Expanded(
@@ -276,7 +276,7 @@ class _CheckoutViewState extends State<CheckoutView> {
                             textAlign: TextAlign.end,
                             style: TextStyle(
                                 color: TColor.secondaryText,
-                                fontSize: 13,
+                                fontSize: 12,
                                 fontWeight: FontWeight.w400),
                           ),
                         ),
@@ -291,7 +291,7 @@ class _CheckoutViewState extends State<CheckoutView> {
                           "Discount ",
                           style: TextStyle(
                               color: TColor.secondaryText,
-                              fontSize: 14,
+                              fontSize: 13,
                               fontWeight: FontWeight.w400),
                         ),
                         Expanded(
@@ -300,7 +300,7 @@ class _CheckoutViewState extends State<CheckoutView> {
                             textAlign: TextAlign.end,
                             style: const TextStyle(
                                 color: Colors.red,
-                                fontSize: 13,
+                                fontSize: 12,
                                 fontWeight: FontWeight.w400),
                           ),
                         ),
@@ -331,7 +331,7 @@ class _CheckoutViewState extends State<CheckoutView> {
                 text: TextSpan(
                   style: TextStyle(
                       color: TColor.secondaryText,
-                      fontSize: 13,
+                      fontSize: 12,
                       fontWeight: FontWeight.w300),
                   children: [
                     const TextSpan(text: "By continuing you agree to our"),
@@ -339,7 +339,7 @@ class _CheckoutViewState extends State<CheckoutView> {
                         text: "Terms",
                         style: TextStyle(
                             color: TColor.primaryText,
-                            fontSize: 13,
+                            fontSize: 12,
                             fontWeight: FontWeight.w300),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
@@ -350,7 +350,7 @@ class _CheckoutViewState extends State<CheckoutView> {
                         text: "Privacy Policy.",
                         style: TextStyle(
                             color: TColor.primaryText,
-                            fontSize: 13,
+                            fontSize: 12,
                             fontWeight: FontWeight.w300),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {

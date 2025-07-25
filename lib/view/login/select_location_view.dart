@@ -58,7 +58,7 @@ class _SelectLocationViewState extends State<SelectLocationView> {
                     "Select Your Location",
                     style: TextStyle(
                         color: TColor.primaryText,
-                        fontSize: 26,
+                        fontSize: 13,
                         fontWeight: FontWeight.w400),
                   ),
                   SizedBox(
@@ -69,7 +69,7 @@ class _SelectLocationViewState extends State<SelectLocationView> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         color: TColor.secondaryText,
-                        fontSize: 14,
+                        fontSize: 13,
                         fontWeight: FontWeight.w300),
                   ),
                   SizedBox(

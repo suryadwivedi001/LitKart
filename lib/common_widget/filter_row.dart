@@ -32,7 +32,7 @@ class FilterRow extends StatelessWidget {
               fObj["name"],
               style: TextStyle(
                   color: isSelect ? TColor.primary : TColor.primaryText,
-                  fontSize: 14,
+                  fontSize: 13,
                   fontWeight: FontWeight.w300),
             ),
           ),

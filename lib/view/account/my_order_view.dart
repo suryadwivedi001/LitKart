@@ -44,7 +44,7 @@ class _MyOrdersViewState extends State<MyOrdersView> {
           "My Orders",
           style: TextStyle(
               color: TColor.primaryText,
-              fontSize: 16,
+              fontSize: 13,
               fontWeight: FontWeight.w400),
         ),
       ),
@@ -55,7 +55,7 @@ class _MyOrdersViewState extends State<MyOrdersView> {
                   "No Any Order Place",
                   style: TextStyle(
                       color: TColor.primaryText,
-                      fontSize: 16,
+                      fontSize: 13,
                       fontWeight: FontWeight.w400),
                 ),
         ) :  ListView.builder(

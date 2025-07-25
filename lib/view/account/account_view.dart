@@ -54,7 +54,7 @@ class _AccountViewState extends State<AccountView> {
                             "Code For Any",
                             style: TextStyle(
                                 color: TColor.primaryText,
-                                fontSize: 16,
+                                fontSize: 13,
                                 fontWeight: FontWeight.w400),
                           ),
                           const SizedBox(
@@ -70,7 +70,7 @@ class _AccountViewState extends State<AccountView> {
                       Text(
                         "codeforany@gmail.com",
                         style: TextStyle(
-                            color: TColor.secondaryText, fontSize: 14),
+                            color: TColor.secondaryText, fontSize: 13),
                       )
                     ],
                   ))

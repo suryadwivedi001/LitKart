@@ -44,7 +44,7 @@ class _PromoCodeViewState extends State<PromoCodeView> {
             "Promo Code",
             style: TextStyle(
                 color: TColor.primaryText,
-                fontSize: 16,
+                fontSize: 13,
                 fontWeight: FontWeight.w400),
           ),
          ),
@@ -56,7 +56,7 @@ class _PromoCodeViewState extends State<PromoCodeView> {
                   "No Any Promo Code Available",
                   style: TextStyle(
                       color: TColor.primaryText,
-                      fontSize: 16,
+                      fontSize: 13,
                       fontWeight: FontWeight.w400),
                 ),
               )

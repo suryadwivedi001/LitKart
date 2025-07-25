@@ -28,7 +28,7 @@ class _FavoritesViewState extends State<FavoritesView> {
           "Favorites",
           style: TextStyle(
               color: TColor.primaryText,
-              fontSize: 16,
+              fontSize: 13,
               fontWeight: FontWeight.w400),
         ),
       ),

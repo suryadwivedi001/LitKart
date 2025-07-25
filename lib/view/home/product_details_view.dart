@@ -101,7 +101,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                           detailVM.pObj.name ?? "",
                           style: TextStyle(
                               color: TColor.primaryText,
-                              fontSize: 24,
+                              fontSize: 15,
                               fontWeight: FontWeight.w400),
                         ),
                       ),
@@ -125,7 +125,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                     "${detailVM.pObj.unitValue ?? ""}${detailVM.pObj.unitName ?? ""}, Price",
                     style: TextStyle(
                         color: TColor.secondaryText,
-                        fontSize: 14,
+                        fontSize: 13,
                         fontWeight: FontWeight.w400),
                   ),
                   const SizedBox(
@@ -184,7 +184,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                           "\$${detailVM.getPrice()}",
                           style: TextStyle(
                               color: TColor.primaryText,
-                              fontSize: 24,
+                              fontSize: 15,
                               fontWeight: FontWeight.w400),
                         ),
                       ),
@@ -207,7 +207,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                           "Product Detail",
                           style: TextStyle(
                               color: TColor.primaryText,
-                              fontSize: 14,
+                              fontSize: 13,
                               fontWeight: FontWeight.w400),
                         ),
                       ),
@@ -232,7 +232,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                           detailVM.pObj.detail ?? "",
                           style: TextStyle(
                               color: TColor.secondaryText,
-                              fontSize: 12,
+                              fontSize: 11,
                               fontWeight: FontWeight.w300),
                         )
                       : Container()),
@@ -253,7 +253,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                           "Nutritions",
                           style: TextStyle(
                               color: TColor.primaryText,
-                              fontSize: 14,
+                              fontSize: 13,
                               fontWeight: FontWeight.w400),
                         ),
                       ),
@@ -340,7 +340,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                           "Review",
                           style: TextStyle(
                               color: TColor.primaryText,
-                              fontSize: 14,
+                              fontSize: 13,
                               fontWeight: FontWeight.w400),
                         ),
                       ),
@@ -393,7 +393,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             //   "Loging",
             //   style: TextStyle(
             //       color: TColor.primaryText,
-            //       fontSize: 26,
+            //       fontSize: 13,
             //       fontWeight: FontWeight.w400),
             // ),
             // SizedBox(
@@ -403,7 +403,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             //   "Enter your emails and password",
             //   style: TextStyle(
             //       color: TColor.secondaryText,
-            //       fontSize: 14,
+            //       fontSize: 13,
             //       fontWeight: FontWeight.w300),
             // ),
             // SizedBox(

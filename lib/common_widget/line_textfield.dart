@@ -22,7 +22,7 @@ class LineTextField extends StatelessWidget {
           title,
           style: TextStyle(
               color: TColor.textTittle,
-              fontSize: 14,
+              fontSize: 13,
               fontWeight: FontWeight.w400),
         ),
         TextField(

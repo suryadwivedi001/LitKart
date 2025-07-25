@@ -31,7 +31,7 @@ class MyOrderRow extends StatelessWidget {
                     "Order No: #",
                     style: TextStyle(
                         color: TColor.primaryText,
-                        fontSize: 14,
+                        fontSize: 13,
                         fontWeight: FontWeight.w400),
                   ),
                   Expanded(
@@ -39,14 +39,14 @@ class MyOrderRow extends StatelessWidget {
                     mObj.orderId?.toString() ?? "",
                     style: TextStyle(
                         color: TColor.primaryText,
-                        fontSize: 14,
+                        fontSize: 13,
                         fontWeight: FontWeight.w400),
                   )),
                   Text(
                     getOrderStatus(mObj),
                     style: TextStyle(
                         color: getOrderStatusColor(mObj),
-                        fontSize: 14,
+                        fontSize: 13,
                         fontWeight: FontWeight.w400),
                   )
                 ],
@@ -86,7 +86,7 @@ class MyOrderRow extends StatelessWidget {
                                 "Items: ",
                                 style: TextStyle(
                                     color: TColor.primaryText,
-                                    fontSize: 13,
+                                    fontSize: 12,
                                     fontWeight: FontWeight.w400),
                               ),
                               Expanded(
@@ -94,7 +94,7 @@ class MyOrderRow extends StatelessWidget {
                                   mObj.names ?? "",
                                   style: TextStyle(
                                       color: TColor.secondaryText,
-                                      fontSize: 13,
+                                      fontSize: 12,
                                       fontWeight: FontWeight.w300),
                                 ),
                               ),
@@ -107,7 +107,7 @@ class MyOrderRow extends StatelessWidget {
                                 "Delivery Type: ",
                                 style: TextStyle(
                                     color: TColor.primaryText,
-                                    fontSize: 13,
+                                    fontSize: 12,
                                     fontWeight: FontWeight.w400),
                               ),
                               Expanded(
@@ -115,7 +115,7 @@ class MyOrderRow extends StatelessWidget {
                                 getDeliverType(mObj),
                                 style: TextStyle(
                                     color: TColor.primaryText,
-                                    fontSize: 13,
+                                    fontSize: 12,
                                     fontWeight: FontWeight.w300),
                               )),
                             ],
@@ -127,7 +127,7 @@ class MyOrderRow extends StatelessWidget {
                                 "Payment Type: ",
                                 style: TextStyle(
                                     color: TColor.primaryText,
-                                    fontSize: 13,
+                                    fontSize: 12,
                                     fontWeight: FontWeight.w400),
                               ),
                               Expanded(
@@ -135,7 +135,7 @@ class MyOrderRow extends StatelessWidget {
                                 getPaymentType(mObj),
                                 style: TextStyle(
                                     color: TColor.primaryText,
-                                    fontSize: 13,
+                                    fontSize: 12,
                                     fontWeight: FontWeight.w300),
                               )),
                             ],
@@ -147,7 +147,7 @@ class MyOrderRow extends StatelessWidget {
                                 "Payment Status: ",
                                 style: TextStyle(
                                     color: TColor.primaryText,
-                                    fontSize: 13,
+                                    fontSize: 12,
                                     fontWeight: FontWeight.w400),
                               ),
                               Expanded(
@@ -155,7 +155,7 @@ class MyOrderRow extends StatelessWidget {
                                 getPaymentStatus(mObj),
                                 style: TextStyle(
                                     color: getPaymentStatusColor(mObj),
-                                    fontSize: 13,
+                                    fontSize: 12,
                                     fontWeight: FontWeight.w400),
                               )),
                             ],

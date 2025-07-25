@@ -44,7 +44,7 @@ class _NotificationListViewState extends State<NotificationListView> {
             "Notifications",
             style: TextStyle(
                 color: TColor.primaryText,
-                fontSize: 16,
+                fontSize: 13,
                 fontWeight: FontWeight.w400),
           ),
           actions: [
@@ -56,7 +56,7 @@ class _NotificationListViewState extends State<NotificationListView> {
                 "Read All",
                 style: TextStyle(
                     color: TColor.primary,
-                    fontSize: 14,
+                    fontSize: 13,
                     fontWeight: FontWeight.w400),
               ),
             )

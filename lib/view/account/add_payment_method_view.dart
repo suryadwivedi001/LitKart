@@ -43,7 +43,7 @@ class _AddPaymentMethodViewState extends State<AddPaymentMethodView> {
           "Add Payment Method",
           style: TextStyle(
               color: TColor.primaryText,
-              fontSize: 16,
+              fontSize: 13,
               fontWeight: FontWeight.w400),
         ),
       ),

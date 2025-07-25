@@ -64,7 +64,7 @@ class _LogInViewState extends State<LogInView> {
                     "Loging",
                     style: TextStyle(
                         color: TColor.primaryText,
-                        fontSize: 26,
+                        fontSize: 13,
                         fontWeight: FontWeight.w400),
                   ),
                   SizedBox(
@@ -74,7 +74,7 @@ class _LogInViewState extends State<LogInView> {
                     "Enter your emails and password",
                     style: TextStyle(
                         color: TColor.secondaryText,
-                        fontSize: 14,
+                        fontSize: 13,
                         fontWeight: FontWeight.w300),
                   ),
                   SizedBox(
@@ -118,7 +118,7 @@ class _LogInViewState extends State<LogInView> {
                           "Forgot Password?",
                           style: TextStyle(
                               color: TColor.primaryText,
-                              fontSize: 13,
+                              fontSize: 12,
                               fontWeight: FontWeight.w300),
                         ),
                       )
@@ -157,7 +157,7 @@ class _LogInViewState extends State<LogInView> {
                                 "Don’t have an account?",
                                 style: TextStyle(
                                     color: TColor.primaryText,
-                                    fontSize: 13,
+                                    fontSize: 12,
                                     fontWeight: FontWeight.w400),
                               ),
                               const SizedBox(
@@ -167,7 +167,7 @@ class _LogInViewState extends State<LogInView> {
                                 "Signup",
                                 style: TextStyle(
                                     color: TColor.primary,
-                                    fontSize: 13,
+                                    fontSize: 12,
                                     fontWeight: FontWeight.w400),
                               ),
                             ],

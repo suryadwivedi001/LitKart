@@ -33,7 +33,7 @@ class NotificationRow extends StatelessWidget {
                           textAlign: TextAlign.left,
                           style: TextStyle(
                               color: TColor.primaryText,
-                              fontSize: 13,
+                              fontSize: 12,
                               fontWeight: FontWeight.w400),
                         ),
 
@@ -54,7 +54,7 @@ class NotificationRow extends StatelessWidget {
                       textAlign: TextAlign.left,
                       style: TextStyle(
                           color: TColor.primaryText,
-                          fontSize: 13,
+                          fontSize: 12,
                           fontWeight: FontWeight.w300),
                     )
                     

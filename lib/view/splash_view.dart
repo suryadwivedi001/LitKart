@@ -27,7 +27,7 @@ class _SplashViewState extends State<SplashView> {
   Widget build(BuildContext context) {
     var media = MediaQuery.sizeOf(context);
     return Scaffold(
-      backgroundColor: TColor.primary,
+      backgroundColor: TColor.white,
       body: Center(
         child:
             Image.asset("assets/img/splash_logo.png", width: media.width * 0.7),

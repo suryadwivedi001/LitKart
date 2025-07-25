@@ -56,7 +56,7 @@ class _MyDetailViewState extends State<MyDetailView> {
           "My Details",
           style: TextStyle(
               color: TColor.primaryText,
-              fontSize: 16,
+              fontSize: 13,
               fontWeight: FontWeight.w400),
         ),
       ),
@@ -89,7 +89,7 @@ class _MyDetailViewState extends State<MyDetailView> {
                         "Mobile Number",
                         style: TextStyle(
                             color: TColor.textTittle,
-                            fontSize: 14,
+                            fontSize: 13,
                             fontWeight: FontWeight.w400),
                       ),
                       TextField(

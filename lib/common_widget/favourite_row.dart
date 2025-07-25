@@ -48,7 +48,7 @@ class FavoriteRow extends StatelessWidget {
                         pObj.name ?? "",
                         style: TextStyle(
                             color: TColor.primaryText,
-                            fontSize: 14,
+                            fontSize: 13,
                             fontWeight: FontWeight.w400),
                       ),
 
@@ -59,7 +59,7 @@ class FavoriteRow extends StatelessWidget {
                         "${pObj.unitValue}${pObj.unitName}",
                         style: TextStyle(
                             color: TColor.secondaryText,
-                            fontSize: 13,
+                            fontSize: 12,
                             fontWeight: FontWeight.w300),
                       ),
 

@@ -67,7 +67,7 @@ class _ExploreDetailViewState extends State<ExploreDetailView> {
           widget.eObj.catName ?? "",
           style: TextStyle(
               color: TColor.primaryText,
-              fontSize: 16,
+              fontSize: 13,
               fontWeight: FontWeight.w400),
         ),
       ),

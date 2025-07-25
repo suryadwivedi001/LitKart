@@ -46,7 +46,7 @@ class _AddAddressViewState extends State<AddAddressView> {
          widget.isEdit ? "Edit Address" : "Add Address",
           style: TextStyle(
               color: TColor.primaryText,
-              fontSize: 16,
+              fontSize: 13,
               fontWeight: FontWeight.w400),
         ),
       ),
@@ -81,7 +81,7 @@ class _AddAddressViewState extends State<AddAddressView> {
                                   "Home",
                                   style: TextStyle(
                                       color: TColor.primaryText,
-                                      fontSize: 14,
+                                      fontSize: 13,
                                       fontWeight: FontWeight.w300),
                                 )
                               ],
@@ -108,7 +108,7 @@ class _AddAddressViewState extends State<AddAddressView> {
                                 "Office",
                                 style: TextStyle(
                                     color: TColor.primaryText,
-                                    fontSize: 14,
+                                    fontSize: 13,
                                     fontWeight: FontWeight.w300),
                               )
                             ],

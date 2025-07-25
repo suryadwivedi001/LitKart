@@ -54,7 +54,7 @@ class _VerificationViewState extends State<VerificationView> {
                     "Enter your 4-digit code",
                     style: TextStyle(
                         color: TColor.primaryText,
-                        fontSize: 26,
+                        fontSize: 13,
                         fontWeight: FontWeight.w400),
                   ),
                   const SizedBox(

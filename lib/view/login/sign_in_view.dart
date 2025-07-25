@@ -65,7 +65,7 @@ class _SignInViewState extends State<SignInView> {
                         "Get your groceries\nwith nectar",
                         style: TextStyle(
                             color: TColor.primaryText,
-                            fontSize: 26,
+                            fontSize: 13,
                             fontWeight: FontWeight.w400),
                       ),
                     ],
@@ -164,7 +164,7 @@ class _SignInViewState extends State<SignInView> {
                   "Or connect with social media",
                   style: TextStyle(
                       color: TColor.secondaryText,
-                      fontSize: 13,
+                      fontSize: 12,
                       fontWeight: FontWeight.w400),
                 ),
                 const SizedBox(

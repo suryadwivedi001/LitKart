@@ -26,7 +26,7 @@ class SectionView extends StatelessWidget {
             title,
             style: TextStyle(
                 color: TColor.primaryText,
-                fontSize: 24,
+                fontSize: 15,
                 fontWeight: FontWeight.w400),
           ),
           TextButton(
@@ -35,7 +35,7 @@ class SectionView extends StatelessWidget {
               "See All",
               style: TextStyle(
                   color: TColor.primary,
-                  fontSize: 14,
+                  fontSize: 13,
                   fontWeight: FontWeight.w400),
             ),
           )

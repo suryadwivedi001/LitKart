@@ -34,7 +34,7 @@ class PromoCodeRow extends StatelessWidget {
                             pObj.title ?? "",
                             style: TextStyle(
                                 color: TColor.primaryText,
-                                fontSize: 13,
+                                fontSize: 12,
                                 fontWeight: FontWeight.w400),
                           ),
                         ),
@@ -61,7 +61,7 @@ class PromoCodeRow extends StatelessWidget {
                       pObj.description ?? "",
                       style: TextStyle(
                           color: TColor.secondaryText,
-                          fontSize: 13,
+                          fontSize: 12,
                           fontWeight: FontWeight.w300),
                     ),
     
@@ -75,7 +75,7 @@ class PromoCodeRow extends StatelessWidget {
                          "Expiry Date:",
                           style: TextStyle(
                               color: TColor.primary,
-                              fontSize: 13,
+                              fontSize: 12,
                               fontWeight: FontWeight.w400),
                         ),
     

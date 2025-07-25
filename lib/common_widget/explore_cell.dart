@@ -55,7 +55,7 @@ class ExploreCell extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(
                   color: TColor.primaryText,
-                  fontSize: 14,
+                  fontSize: 13,
                   fontWeight: FontWeight.w400),
             ),
 

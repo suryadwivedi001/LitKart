@@ -45,7 +45,7 @@ class _PaymentMethodListViewState extends State<PaymentMethodListView> {
             "Payment Methods",
             style: TextStyle(
                 color: TColor.primaryText,
-                fontSize: 16,
+                fontSize: 13,
                 fontWeight: FontWeight.w400),
           ),
           actions: [

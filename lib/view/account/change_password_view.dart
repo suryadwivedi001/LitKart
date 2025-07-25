@@ -49,7 +49,7 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
           "Change Password",
           style: TextStyle(
               color: TColor.primaryText,
-              fontSize: 16,
+              fontSize: 13,
               fontWeight: FontWeight.w400),
         ),
       ),

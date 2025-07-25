@@ -47,7 +47,7 @@ class _WriteReviewViewState extends State<WriteReviewView> {
                       "Write A Review",
                       style: TextStyle(
                           color: TColor.primaryText,
-                          fontSize: 24,
+                          fontSize: 15,
                           fontWeight: FontWeight.w400),
                     ),
                     IconButton(
