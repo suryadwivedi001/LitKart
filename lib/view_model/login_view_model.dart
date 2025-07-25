@@ -37,6 +37,8 @@ class LoginViewModel extends GetxController {
           Globs.appName, "Pleaser enter valid password min 6 character");
       return;
     }
+    print("🔥 Making API call to login with email: ${txtEmail.value.text}");
+
 
       Globs.showHUD();
 

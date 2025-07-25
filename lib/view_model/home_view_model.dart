@@ -35,6 +35,7 @@ class HomeViewModel extends GetxController {
     ServiceCall.post({
       
     }, SVKey.svHome, isToken: true, withSuccess: (resObj) async {
+      print("✅ Home API Success: $resObj");
       Globs.hideHUD();
 
       if (resObj[KKey.status] == "1") {
@@ -42,6 +43,7 @@ class HomeViewModel extends GetxController {
         
 
         var offerDataArr =   (payload["offer_list"] as List? ?? []).map((oObj) {
+            print("🔥 Offer Product Raw: $oObj");
             return OfferProductModel.fromJson(oObj);
         }).toList();
 

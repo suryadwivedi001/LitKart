@@ -33,7 +33,7 @@ class ExploreCell extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CachedNetworkImage(
-                  imageUrl: pObj.image ?? "",
+                  imageUrl: "${pObj.image ?? ""}",
                   placeholder: (context, url) => const Center(
                     child: CircularProgressIndicator(),
                   ),

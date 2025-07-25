@@ -40,7 +40,7 @@ class OfferProductModel {
   });
 
   OfferProductModel.fromJson(Map<String, dynamic> json) {
-    offerPrice = json['offer_price'];
+    offerPrice = (json['offer_price'] as num?)?.toDouble();
     startDate = json['start_date'];
     endDate = json['end_date'];
     prodId = json['prod_id'];
@@ -52,7 +52,7 @@ class OfferProductModel {
     unitName = json['unit_name'];
     unitValue = json['unit_value'];
     nutritionWeight = json['nutrition_weight'];
-    price = json['price'];
+    price = (json['price'] as num?)?.toDouble();
     image = json['image'];
     catName = json['cat_name'];
     typeName = json['type_name'];

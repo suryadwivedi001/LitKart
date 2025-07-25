@@ -34,7 +34,7 @@ class PromoCodeModel {
     type = json['type'];
     minOrderAmount = json['min_order_amount'];
     maxDiscountAmount = json['max_discount_amount'];
-    offerPrice = json['offer_price'];
+    offerPrice = (json['offer_price']);
     startDate = json['start_date'];
     endDate = json['end_date'];
     createdDate = json['created_date'];

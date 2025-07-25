@@ -67,20 +67,20 @@ class CartItemModel {
     unitName = json['unit_name'];
     unitValue = json['unit_value'];
     nutritionWeight = json['nutrition_weight'];
-    price = json['price'];
+    price = (json['price'] as num?)?.toDouble();
     createdDate = json['created_date'];
     modifyDate = json['modify_date'];
     catName = json['cat_name'];
     isFav = json['is_fav'];
     brandName = json['brand_name'];
     typeName = json['type_name'];
-    offerPrice = json['offer_price'];
+    offerPrice = (json['offer_price'] as num?)?.toDouble();
     startDate = json['start_date'];
     endDate = json['end_date'];
     isOfferActive = json['is_offer_active'];
     image = json['image'];
-    itemPrice = json['item_price'];
-    totalPrice = json['total_price'];
+    itemPrice = (json['item_price'] as num?)?.toDouble();
+    totalPrice = (json['total_price'] as num?)?.toDouble();
   }
 
   Map<String, dynamic> toJson() {

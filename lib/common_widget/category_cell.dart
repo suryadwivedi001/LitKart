@@ -36,7 +36,7 @@ class CategoryCell extends StatelessWidget {
 
 
                 CachedNetworkImage(
-                  imageUrl: pObj.image ?? "",
+                  imageUrl: "http://192.168.1.13:3001${pObj.image ?? ""}",
                   placeholder: (context, url) =>
                       const Center(
                     child: CircularProgressIndicator(),
