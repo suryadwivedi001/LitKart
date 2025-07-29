@@ -210,7 +210,7 @@ class ProductCell extends StatelessWidget {
                       return InkWell(
                         onTap: addToCart,
                         child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             border: Border.all(color: TColor.primary, width: 1),
@@ -220,7 +220,7 @@ class ProductCell extends StatelessWidget {
                             'ADD',
                             style: TextStyle(
                               color: TColor.primary,
-                              fontSize: 8, // Smaller font
+                              fontSize: 12, // Smaller font
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -228,7 +228,7 @@ class ProductCell extends StatelessWidget {
                       );
                     } else {
                       return Container(
-                        height: 20, // Fixed height
+                        height: 28, // Fixed height
                         decoration: BoxDecoration(
                           color: TColor.primary,
                           borderRadius: BorderRadius.circular(4),
@@ -239,11 +239,11 @@ class ProductCell extends StatelessWidget {
                             InkWell(
                               onTap: () => updateQuantity(quantity - 1),
                               child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                                padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 1),
                                 child: const Icon(
                                   Icons.remove,
                                   color: Colors.white,
-                                  size: 10,
+                                  size: 14,
                                 ),
                               ),
                             ),
@@ -255,7 +255,7 @@ class ProductCell extends StatelessWidget {
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(
                                   color: Colors.white,
-                                  fontSize: 10,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -263,11 +263,11 @@ class ProductCell extends StatelessWidget {
                             InkWell(
                               onTap: () => updateQuantity(quantity + 1),
                               child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                                padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 1),
                                 child: const Icon(
                                   Icons.add,
                                   color: Colors.white,
-                                  size: 10,
+                                  size: 14,
                                 ),
                               ),
                             ),
