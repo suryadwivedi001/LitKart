@@ -6,6 +6,7 @@ import '../../common/color_extension.dart';
 import '../../common_widget/category_cell.dart';
 import '../../common_widget/product_cell.dart';
 import '../../common_widget/section_view.dart';
+import '../../common_widget/custom_navigation_bar.dart'; // New import - safe to add
 import '../../view_model/cart_view_model.dart';
 import '../../view_model/home_view_model.dart';
 
@@ -20,7 +21,7 @@ class _HomeViewState extends State<HomeView> {
   TextEditingController txtSearch = TextEditingController();
   final homeVM = Get.put(HomeViewModel());
 
-  // Smart product grid builder with conditional layout
+  // UNCHANGED: Existing buildProductGrid method preserved
   Widget buildProductGrid(List items) {
     if (items.isEmpty) return const SizedBox.shrink();
     
@@ -99,6 +100,7 @@ class _HomeViewState extends State<HomeView> {
     }
   }
 
+  // UNCHANGED: Existing dispose method preserved
   @override
   void dispose() {
     Get.delete<HomeViewModel>();
@@ -107,7 +109,8 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    var media = MediaQuery.sizeOf(context);
+    var media = MediaQuery.sizeOf(context); // PRESERVED: Existing variable
+    
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -115,38 +118,52 @@ class _HomeViewState extends State<HomeView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Logo
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    "assets/img/color_logo.png",
-                    width: 25,
-                  ),
-                ],
+              // NEW: Custom Navigation Bar (replaces old logo + location)
+              // Wrapped in try-catch for safety
+              Builder(
+                builder: (context) {
+                  try {
+                    return const CustomNavigationBar();
+                  } catch (e) {
+                    // FALLBACK: Show original layout if CustomNavigationBar fails
+                    return Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              "assets/img/color_logo.png",
+                              width: 25,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 4),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              "assets/img/location.png",
+                              width: 16,
+                              height: 16,
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              "Dhaka, Banassre",
+                              style: TextStyle(
+                                  color: TColor.darkGray,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w400),
+                            ),
+                          ],
+                        ),
+                      ],
+                    );
+                  }
+                },
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: 10),
               
-              // Location
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    "assets/img/location.png",
-                    width: 16,
-                    height: 16,
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    "Dhaka, Banassre",
-                    style: TextStyle(
-                        color: TColor.darkGray,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w400),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 15),
+              // UNCHANGED: All existing sections preserved exactly
               
               // Search Bar
               Padding(

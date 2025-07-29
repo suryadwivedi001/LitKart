@@ -7,7 +7,7 @@ import 'package:flutter_timezone/flutter_timezone.dart';
 import '../main.dart';
 
 class Globs {
-  static const appName = "Online Groceries";
+  static const appName = "LitKart";
 
   static const userPayload = "user_payload";
   static const userLogin = "user_login";

@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Online Groceries',
+      title: 'LitKart',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: "Inter",

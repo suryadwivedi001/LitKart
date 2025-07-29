@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class TColor {
-  static Color get primary => const Color(0xff188276);
+  static Color get primary => const Color(0xFF0D47A1);
   static Color get primaryText => const Color(0xff030303);
   static Color get secondaryText => const Color(0xff828282);
   static Color get textTittle => const Color(0xff7C7C7C);
@@ -13,7 +13,7 @@ class TColor {
 extension HexColor on Color {
   /// String is in the format "aabbcc" or "ffaabbcc" with an optional leading "#".
   static Color fromHex(String hexString) {
-    final buffer = StringBuffer();
+    final buffer = StringBuffer();                       
     if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');
     buffer.write(hexString.replaceFirst('#', ''));
     return Color(int.parse(buffer.toString(), radix: 16));

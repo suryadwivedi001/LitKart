@@ -1,5 +1,5 @@
 
-# Project Documentation: Online Groceries Shop App (Flutter)
+# Project Documentation: LitKart Shop App (Flutter)
 
 This document provides a comprehensive overview of the project structure, file organization, and architecture of the `online_groceries_shop_app_flutter` open-source project. This documentation aims to help AI and developers understand the codebase and navigate the project effectively.
 
