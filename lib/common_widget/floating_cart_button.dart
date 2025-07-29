@@ -6,8 +6,9 @@ import 'package:online_groceries/view/my_cart/my_cart_view.dart';
 
 class FloatingCartButton extends StatefulWidget {
   final VoidCallback? onTap;
+  final bool hideOnAccount; // Add this parameter
   
-  const FloatingCartButton({super.key, this.onTap});
+  const FloatingCartButton({super.key, this.onTap, this.hideOnAccount = false});
 
   @override
   State<FloatingCartButton> createState() => _FloatingCartButtonState();
@@ -41,7 +42,6 @@ class _FloatingCartButtonState extends State<FloatingCartButton>
   }
 
   void _navigateToCart() {
-    // Use custom onTap if provided, otherwise navigate to MyCartView
     if (widget.onTap != null) {
       widget.onTap!();
     } else {
@@ -54,7 +54,8 @@ class _FloatingCartButtonState extends State<FloatingCartButton>
     final cartVM = Get.find<CartViewModel>();
     
     return Obx(() {
-      final bool shouldShow = cartVM.listArr.isNotEmpty;
+      // Simple logic: show if cart has items AND not hidden by parent
+      final bool shouldShow = cartVM.listArr.isNotEmpty && !widget.hideOnAccount;
       
       if (shouldShow) {
         _animationController.forward();
@@ -64,7 +65,7 @@ class _FloatingCartButtonState extends State<FloatingCartButton>
       
       return shouldShow
           ? Positioned(
-              bottom: 90, // Position above bottom navigation
+              bottom: 90,
               left: 20,
               right: 20,
               child: SlideTransition(
@@ -76,7 +77,7 @@ class _FloatingCartButtonState extends State<FloatingCartButton>
                     borderRadius: BorderRadius.circular(12),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.15), // Fixed deprecation
+                        color: Colors.black.withValues(alpha: 0.15),
                         blurRadius: 8,
                         offset: const Offset(0, 4),
                       ),
@@ -97,7 +98,7 @@ class _FloatingCartButtonState extends State<FloatingCartButton>
                             Container(
                               padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
-                                color: Colors.white.withValues(alpha: 0.2), // Fixed deprecation
+                                color: Colors.white.withValues(alpha: 0.2),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: const Icon(
@@ -123,7 +124,7 @@ class _FloatingCartButtonState extends State<FloatingCartButton>
                                   Text(
                                     "Tap to review",
                                     style: TextStyle(
-                                      color: Colors.white.withValues(alpha: 0.8), // Fixed deprecation
+                                      color: Colors.white.withValues(alpha: 0.8),
                                       fontSize: 12,
                                     ),
                                   ),

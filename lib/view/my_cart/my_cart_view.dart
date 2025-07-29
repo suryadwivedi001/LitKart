@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:online_groceries/view/my_cart/checkout_view.dart';
+import 'package:online_groceries/view/main_tabview/main_tabview.dart'; // Add this import
 
 import '../../common/color_extension.dart';
 import '../../common_widget/cart_item_row.dart';
@@ -14,12 +15,22 @@ class MyCartView extends StatefulWidget {
 }
 
 class _MyCartViewState extends State<MyCartView> {
-  // CHANGE: Use Get.find instead of Get.put (since it's already created in MainTabView)
+  // IMPORTANT: Use Get.find instead of Get.put
   final cartVM = Get.find<CartViewModel>();
+  bool hasShownItems = false; // Track if we've seen items in cart
+
+  @override
+  void initState() {
+    super.initState();
+    // Set initial state - if cart has items when we open, mark as true
+    if (cartVM.listArr.isNotEmpty) {
+      hasShownItems = true;
+    }
+  }
 
   @override
   void dispose() {
-    // CHANGE: Remove Get.delete - let MainTabView manage the lifecycle
+    // IMPORTANT: Remove Get.delete - let MainTabView manage lifecycle
     super.dispose();
   }
 
@@ -42,13 +53,24 @@ class _MyCartViewState extends State<MyCartView> {
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          Obx(() => ListView.separated(
+          Obx(() {
+            // If we had items before and now cart is empty, navigate to home
+            if (hasShownItems && cartVM.listArr.isEmpty) {
+              Future.delayed(Duration.zero, () {
+                if (mounted) {
+                  // Simple navigation to MainTabView (will default to home tab)
+                  Get.offAll(() => const MainTabView());
+                }
+              });
+            }
+            
+            return ListView.separated(
               padding: const EdgeInsets.all(20.0),
               itemCount: cartVM.listArr.length,
               separatorBuilder: (context, index) => const Divider(
-                    color: Colors.black26,
-                    height: 1,
-                  ),
+                color: Colors.black26,
+                height: 1,
+              ),
               itemBuilder: (context, index) {
                 var cObj = cartVM.listArr[index];
                 return CartItemRow(
@@ -69,12 +91,14 @@ class _MyCartViewState extends State<MyCartView> {
                     cartVM.serviceCallRemoveCart(cObj);
                   },
                 );
-              })),
+              }
+            );
+          }),
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: Obx(
               () => Column(
-                mainAxisAlignment: cartVM.listArr.isNotEmpty ? MainAxisAlignment.end :  MainAxisAlignment.center,
+                mainAxisAlignment: cartVM.listArr.isNotEmpty ? MainAxisAlignment.end : MainAxisAlignment.center,
                 children: [
                   cartVM.listArr.isNotEmpty
                       ? MaterialButton(
@@ -121,7 +145,7 @@ class _MyCartViewState extends State<MyCartView> {
                           ),
                         )
                       : Text(
-                          "Your Card is Empty",
+                          "Your Cart is Empty",
                           style: TextStyle(
                               color: TColor.primaryText,
                               fontSize: 13,

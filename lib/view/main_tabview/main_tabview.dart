@@ -24,19 +24,17 @@ class _MainTabViewState extends State<MainTabView>
   TabController? controller;
   int selectTab = 0;
   final favVM = Get.put(FavoriteViewModel());
-  final cartVM = Get.put(CartViewModel()); // Keep this - it's the main instance
+  final cartVM = Get.put(CartViewModel());
 
   @override
   void initState() {
     super.initState();
     
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
-    // CHANGE: 4 tabs instead of 5 (removed cart tab)
     controller = TabController(length: 4, vsync: this);
     controller?.addListener(() {
       selectTab = controller?.index ?? 0;
 
-      // CHANGE: Updated index - Favourite is now index 2 (was 3)
       if(selectTab == 2) {
         favVM.serviceCalList();
       }
@@ -48,8 +46,6 @@ class _MainTabViewState extends State<MainTabView>
   void dispose() {
     super.dispose();
     controller?.dispose();
-    // Optionally delete CartViewModel here when the entire app section is disposed
-    // Get.delete<CartViewModel>();
   }
 
   @override
@@ -57,20 +53,19 @@ class _MainTabViewState extends State<MainTabView>
     return Scaffold(
       body: Stack(
         children: [
-          // CHANGE: Remove MyCartView from TabBarView
           TabBarView(controller: controller, children: [
             const HomeView(),
             const ExploreView(),
-            const FavoritesView(), // Moved up - now index 2
-            const AccountView(),    // Moved up - now index 3
+            const FavoritesView(),
+            const AccountView(),
           ]),
-          // FloatingCartButton that navigates directly to MyCartView
-          FloatingCartButton(
-            onTap: () {
-              // Navigate directly to MyCartView instead of switching tabs
-              Get.to(() => const MyCartView());
-            },
-          ),
+          // Show floating cart button only when NOT on account tab
+          if (selectTab != 3)
+            FloatingCartButton(
+              onTap: () {
+                Get.to(() => const MyCartView());
+              },
+            ),
         ],
       ),
       bottomNavigationBar: Container(
@@ -107,7 +102,6 @@ class _MainTabViewState extends State<MainTabView>
                 fontSize: 11,
                 fontWeight: FontWeight.w400,
               ),
-              // CHANGE: Removed Cart tab - only 4 tabs now
               tabs: [
                 Tab(
                   text: "Shop",
@@ -127,14 +121,13 @@ class _MainTabViewState extends State<MainTabView>
                     color: selectTab == 1 ? TColor.primary : TColor.primaryText,
                   ),
                 ),
-                // CART TAB REMOVED
                 Tab(
                   text: "Favourite",
                   icon: Image.asset(
                     "assets/img/fav_tab.png",
                     width: 25,
                     height: 25,
-                    color: selectTab == 2 ? TColor.primary : TColor.primaryText, // Changed from 3 to 2
+                    color: selectTab == 2 ? TColor.primary : TColor.primaryText,
                   ),
                 ),
                 Tab(
@@ -143,7 +136,7 @@ class _MainTabViewState extends State<MainTabView>
                     "assets/img/account_tab.png",
                     width: 25,
                     height: 25,
-                    color: selectTab == 3 ? TColor.primary : TColor.primaryText, // Changed from 4 to 3
+                    color: selectTab == 3 ? TColor.primary : TColor.primaryText,
                   ),
                 )
               ]),
