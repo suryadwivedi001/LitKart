@@ -14,14 +14,12 @@ class MyCartView extends StatefulWidget {
 }
 
 class _MyCartViewState extends State<MyCartView> {
-  final cartVM = Get.put(CartViewModel());
-
-  
+  // CHANGE: Use Get.find instead of Get.put (since it's already created in MainTabView)
+  final cartVM = Get.find<CartViewModel>();
 
   @override
   void dispose() {
-    // TODO: implement dispose
-    Get.delete<CartViewModel>();
+    // CHANGE: Remove Get.delete - let MainTabView manage the lifecycle
     super.dispose();
   }
 
