@@ -146,12 +146,6 @@ class _HomeViewState extends State<HomeView> {
 
                             homeVM.serviceCallHome();
                           },
-                          onCart: () {
-                            CartViewModel.serviceCallAddToCart(pObj.prodId ?? 0, 1, () {
-                              // Add this line to refresh cart immediately
-                              Get.find<CartViewModel>().serviceCallList();
-                            });
-                          },
                         );
                       }),
                 ),
@@ -180,12 +174,6 @@ class _HomeViewState extends State<HomeView> {
                                 ));
 
                           homeVM.serviceCallHome();
-                        },
-                        onCart: () {
-                          CartViewModel.serviceCallAddToCart(pObj.prodId ?? 0, 1, () {
-                            // Add this line to refresh cart immediately
-                            Get.find<CartViewModel>().serviceCallList();
-                          });
                         },
                       );
                     }),),
@@ -234,12 +222,6 @@ class _HomeViewState extends State<HomeView> {
 
                             homeVM.serviceCallHome();
                           },
-                        onCart: () {
-                          CartViewModel.serviceCallAddToCart(pObj.prodId ?? 0, 1, () {
-                            // Add this line to refresh cart immediately
-                            Get.find<CartViewModel>().serviceCallList();
-                          });
-                        },
                       );
                     }),),
               ),
