@@ -21,17 +21,15 @@ class ProductCell extends StatelessWidget {
     required this.pObj,
     required this.onPressed,
     this.onCart,
-    this.weight = 140, // Reduced from 180 to 140
-    this.margin = 6, // Reduced margin for compactness
+    this.weight = 140,
+    this.margin = 6,
   });
 
-  // Generate random rating between 3.9 and 5.0
   double get randomRating {
     final random = Random();
-    return 3.9 + (random.nextDouble() * 1.1); // 3.9 to 5.0
+    return 3.9 + (random.nextDouble() * 1.1);
   }
 
-  // Helper method to get current quantity in cart
   int getCartQuantity() {
     try {
       final cartVM = Get.find<CartViewModel>();
@@ -44,7 +42,6 @@ class ProductCell extends StatelessWidget {
     }
   }
 
-  // Helper method to get cart item
   CartItemModel? getCartItem() {
     try {
       final cartVM = Get.find<CartViewModel>();
@@ -56,14 +53,12 @@ class ProductCell extends StatelessWidget {
     }
   }
 
-  // Add item to cart (first time)
   void addToCart() {
     CartViewModel.serviceCallAddToCart(pObj.prodId ?? 0, 1, () {
       Get.find<CartViewModel>().serviceCallList();
     });
   }
 
-  // Update quantity in cart
   void updateQuantity(int newQty) {
     final cartItem = getCartItem();
     if (cartItem != null) {
@@ -81,171 +76,209 @@ class ProductCell extends StatelessWidget {
       onTap: onPressed,
       child: Container(
         width: weight,
+        height: 160, // FIXED HEIGHT - This prevents any vertical overflow
         margin: EdgeInsets.symmetric(horizontal: margin),
-        padding: const EdgeInsets.all(12), // Reduced padding
+        padding: const EdgeInsets.all(10), // Reduced padding
         decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(color: TColor.placeholder.withOpacity(0.5), width: 1),
-          borderRadius: BorderRadius.circular(12), // Slightly smaller radius
+          borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Compact image section
+            // ULTRA-SAFE IMAGE SECTION
             Center(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(6),
-                child: SizedBox(
-                  width: 70, // Smaller image
-                  height: 60, // Smaller height
+              child: Container(
+                width: 60, // Smaller image to ensure fit
+                height: 50, // Smaller height
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(6),
+                  color: const Color(0xffF2F3F2),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(6),
                   child: CachedNetworkImage(
                     imageUrl: pObj.image ?? "",
-                    placeholder: (context, url) => const Center(
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    ),
-                    errorWidget: (context, url, error) => const Icon(Icons.error, size: 20),
+                    width: 60,
+                    height: 50,
                     fit: BoxFit.cover,
+                    placeholder: (context, url) => Container(
+                      width: 60,
+                      height: 50,
+                      color: const Color(0xffF2F3F2),
+                      child: const Icon(Icons.image, size: 16, color: Colors.grey),
+                    ),
+                    errorWidget: (context, url, error) => Container(
+                      width: 60,
+                      height: 50,
+                      color: const Color(0xffF2F3F2),
+                      child: const Icon(Icons.broken_image, size: 16, color: Colors.grey),
+                    ),
                   ),
                 ),
-              ),
-            ),
-            const SizedBox(height: 8),
-            
-            // Product name (compact)
-            Text(
-              pObj.name ?? "",
-              style: TextStyle(
-                color: TColor.primaryText,
-                fontSize: 11, // Smaller font
-                fontWeight: FontWeight.w500,
-              ),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-            const SizedBox(height: 4),
-            
-            // Unit info
-            Text(
-              "${pObj.unitValue}${pObj.unitName}",
-              style: TextStyle(
-                color: TColor.secondaryText,
-                fontSize: 10, // Smaller font
-                fontWeight: FontWeight.w300,
-              ),
-            ),
-            const SizedBox(height: 4),
-            
-            // Always show star rating with random value
-            IgnorePointer(
-              ignoring: true,
-              child: RatingBar.builder(
-                initialRating: pObj.avgRating ?? randomRating, // Use backend rating if available, otherwise random
-                minRating: 1,
-                direction: Axis.horizontal,
-                allowHalfRating: true,
-                itemCount: 5,
-                itemSize: 12, // Smaller stars
-                itemPadding: const EdgeInsets.symmetric(horizontal: 0.5),
-                itemBuilder: (context, _) => const Icon(
-                  Icons.star,
-                  color: Colors.amber, // Golden color
-                ),
-                onRatingUpdate: (rate) {},
               ),
             ),
             const SizedBox(height: 6),
             
-            // Price and cart section
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Text(
-                    "\$${pObj.offerPrice ?? pObj.price}",
-                    style: TextStyle(
-                      color: TColor.primaryText,
-                      fontSize: 13, // Slightly smaller
-                      fontWeight: FontWeight.w600,
+            // CONSTRAINED TEXT SECTION
+            Expanded(
+              flex: 2,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Product name with strict constraints
+                  SizedBox(
+                    height: 26, // Fixed height for 2 lines
+                    child: Text(
+                      pObj.name ?? "Product",
+                      style: TextStyle(
+                        color: TColor.primaryText,
+                        fontSize: 10, // Smaller font
+                        fontWeight: FontWeight.w500,
+                        height: 1.2, // Control line height
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                ),
-                const SizedBox(width: 4),
-                // Compact ADD / Quantity Controller
-                Obx(() {
-                  final quantity = getCartQuantity();
+                  const SizedBox(height: 2),
                   
-                  if (quantity == 0) {
-                    // Compact ADD button
-                    return InkWell(
-                      onTap: addToCart,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  // Unit info
+                  SizedBox(
+                    height: 12, // Fixed height
+                    child: Text(
+                      "${pObj.unitValue ?? ''}${pObj.unitName ?? ''}",
+                      style: TextStyle(
+                        color: TColor.secondaryText,
+                        fontSize: 9, // Smaller font
+                        fontWeight: FontWeight.w300,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  
+                  // Star rating
+                  SizedBox(
+                    height: 14, // Fixed height for stars
+                    child: RatingBar.builder(
+                      initialRating: pObj.avgRating ?? randomRating,
+                      minRating: 1,
+                      direction: Axis.horizontal,
+                      allowHalfRating: true,
+                      itemCount: 5,
+                      itemSize: 10, // Smaller stars
+                      itemPadding: const EdgeInsets.symmetric(horizontal: 0.2),
+                      itemBuilder: (context, _) => const Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                      onRatingUpdate: (rate) {},
+                      ignoreGestures: true,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            
+            // BOTTOM SECTION - Price and Controls
+            SizedBox(
+              height: 24, // Fixed height for bottom section
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      "\$${pObj.offerPrice ?? pObj.price ?? '0'}",
+                      style: TextStyle(
+                        color: TColor.primaryText,
+                        fontSize: 11, // Smaller font
+                        fontWeight: FontWeight.w600,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  
+                  // Compact cart controls
+                  Obx(() {
+                    final quantity = getCartQuantity();
+                    
+                    if (quantity == 0) {
+                      return InkWell(
+                        onTap: addToCart,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(color: TColor.primary, width: 1),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: Text(
+                            'ADD',
+                            style: TextStyle(
+                              color: TColor.primary,
+                              fontSize: 8, // Smaller font
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      );
+                    } else {
+                      return Container(
+                        height: 20, // Fixed height
                         decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(color: TColor.primary, width: 1),
-                          borderRadius: BorderRadius.circular(6),
+                          color: TColor.primary,
+                          borderRadius: BorderRadius.circular(4),
                         ),
-                        child: Text(
-                          'ADD',
-                          style: TextStyle(
-                            color: TColor.primary,
-                            fontSize: 10,
-                            fontWeight: FontWeight.w600,
-                          ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            InkWell(
+                              onTap: () => updateQuantity(quantity - 1),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                                child: const Icon(
+                                  Icons.remove,
+                                  color: Colors.white,
+                                  size: 10,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              constraints: const BoxConstraints(minWidth: 16),
+                              padding: const EdgeInsets.symmetric(horizontal: 4),
+                              child: Text(
+                                quantity.toString(),
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () => updateQuantity(quantity + 1),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                                child: const Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                  size: 10,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    );
-                  } else {
-                    // Compact quantity controller
-                    return Container(
-                      decoration: BoxDecoration(
-                        color: TColor.primary,
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          InkWell(
-                            onTap: () => updateQuantity(quantity - 1),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-                              child: const Icon(
-                                Icons.remove,
-                                color: Colors.white,
-                                size: 12,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 6),
-                            child: Text(
-                              quantity.toString(),
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () => updateQuantity(quantity + 1),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-                              child: const Icon(
-                                Icons.add,
-                                color: Colors.white,
-                                size: 12,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }
-                }),
-              ],
-            )
+                      );
+                    }
+                  }),
+                ],
+              ),
+            ),
           ],
         ),
       ),
