@@ -33,7 +33,7 @@ class OrderItemRow extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 CachedNetworkImage(
-                  imageUrl: "http://192.168.1.13:3001${pObj.image ?? ""}",
+                  imageUrl: "${pObj.image ?? ""}",
                   placeholder: (context, url) => const Center(
                     child: CircularProgressIndicator(),
                   ),

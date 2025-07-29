@@ -62,7 +62,7 @@ class _SignInViewState extends State<SignInView> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        "Get your groceries\nwith nectar",
+                        "",
                         style: TextStyle(
                             color: TColor.primaryText,
                             fontSize: 13,
