@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:online_groceries/model/offer_product_model.dart';
 import 'package:online_groceries/view/home/product_details_view.dart';
 
 import '../../common/color_extension.dart';
@@ -136,7 +135,7 @@ class _HomeViewState extends State<HomeView> {
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       itemCount: homeVM.offerArr.length,
                       itemBuilder: (context, index) {
-                        var pObj = homeVM.offerArr[index] ;
+                        var pObj = homeVM.offerArr[index];
 
                         return ProductCell(
                           pObj: pObj,
@@ -148,9 +147,10 @@ class _HomeViewState extends State<HomeView> {
                             homeVM.serviceCallHome();
                           },
                           onCart: () {
-                            CartViewModel.serviceCallAddToCart( pObj.prodId ?? 0  , 1, () {
-
-                             });
+                            CartViewModel.serviceCallAddToCart(pObj.prodId ?? 0, 1, () {
+                              // Add this line to refresh cart immediately
+                              Get.find<CartViewModel>().serviceCallList();
+                            });
                           },
                         );
                       }),
@@ -175,15 +175,17 @@ class _HomeViewState extends State<HomeView> {
                       return ProductCell(
                         pObj: pObj,
                         onPressed: () async {
-                          await  Get.to(() => ProductDetails(
+                          await Get.to(() => ProductDetails(
                                   pObj: pObj,
                                 ));
 
                           homeVM.serviceCallHome();
                         },
                         onCart: () {
-                          CartViewModel.serviceCallAddToCart(
-                                pObj.prodId ?? 0, 1, () {});
+                          CartViewModel.serviceCallAddToCart(pObj.prodId ?? 0, 1, () {
+                            // Add this line to refresh cart immediately
+                            Get.find<CartViewModel>().serviceCallList();
+                          });
                         },
                       );
                     }),),
@@ -221,7 +223,7 @@ class _HomeViewState extends State<HomeView> {
                     padding: const EdgeInsets.symmetric(horizontal: 15),
                     itemCount: homeVM.listArr.length,
                     itemBuilder: (context, index) {
-                      var pObj = homeVM.listArr[index] ;
+                      var pObj = homeVM.listArr[index];
 
                       return ProductCell(
                         pObj: pObj,
@@ -233,8 +235,10 @@ class _HomeViewState extends State<HomeView> {
                             homeVM.serviceCallHome();
                           },
                         onCart: () {
-                          CartViewModel.serviceCallAddToCart(
-                                pObj.prodId ?? 0, 1, () {});
+                          CartViewModel.serviceCallAddToCart(pObj.prodId ?? 0, 1, () {
+                            // Add this line to refresh cart immediately
+                            Get.find<CartViewModel>().serviceCallList();
+                          });
                         },
                       );
                     }),),
