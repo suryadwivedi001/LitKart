@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../../common/color_extension.dart';
 import '../../common_widget/product_cell.dart';
 import '../../common_widget/custom_navigation_bar.dart';
+import 'package:flutter/services.dart';
 import '../../view_model/home_view_model.dart';
 import 'product_details_view.dart';
 
@@ -17,7 +18,7 @@ class _HomeViewState extends State<HomeView> {
   late final TextEditingController txtSearch;
   final homeVM = Get.put(HomeViewModel());
 
-  // Section/tabs to display—add/remove as needed
+  // Section/tabs for the top
   final List<String> sectionTabs = [
     "All",
     "Exclusive Offer",
@@ -49,7 +50,6 @@ class _HomeViewState extends State<HomeView> {
   }
 
   /// Returns OfferProductModel items for selected tab.
-  /// You can expand this to fetch sectioned data as your project grows.
   List getSectionProducts(String section) {
     switch (section) {
       case 'Exclusive Offer':
@@ -58,7 +58,6 @@ class _HomeViewState extends State<HomeView> {
         return homeVM.bestSellingArr;
       case 'Groceries':
         return homeVM.listArr;
-      // Sections with no data yet—later you can wire new lists in HomeViewModel
       case 'Rakhi':
       case 'Electronics':
       case 'Beauty':
@@ -78,52 +77,25 @@ class _HomeViewState extends State<HomeView> {
     }
   }
 
-  /// Top section/tabs nav as a horizontally scrollable bar.
-  Widget buildSectionTabBar() {
-    return SizedBox(
-      height: 44,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        itemCount: sectionTabs.length,
-        itemBuilder: (context, index) {
-          final section = sectionTabs[index];
-          final isSelected = section == selectedSection;
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 2),
-            child: GestureDetector(
-              onTap: () => setState(() => selectedSection = section),
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
-                decoration: BoxDecoration(
-                  color: isSelected ? TColor.primary.withOpacity(0.12) : TColor.white,
-                  borderRadius: BorderRadius.circular(18),
-                  border: Border.all(
-                    color: isSelected ? TColor.primary : TColor.placeholder.withOpacity(0.16),
-                    width: isSelected ? 1.1 : 0.7,
-                  ),
-                ),
-                child: Text(
-                  section,
-                  style: TextStyle(
-                    color: isSelected ? TColor.primary : TColor.primaryText,
-                    fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-                  ),
-                ),
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  }
+  /// The responsive grid.
+  Widget buildResponsiveProductGrid(List items, BoxConstraints constraints) {
+    // Base settings for card and gap
+    const double minCardWidth = 90;
+    const int maxColumns = 3;
+    const double horizontalGap = 8;
+    const double gridHorizontalPadding = 8;
 
-  /// Product grid for active section: shows your finalized ProductCell (width 90),
-  /// three per row, vertical scroll, minimal left/right padding.
-  Widget buildVerticalProductGrid(List items) {
+    // Calculate how many cards per row, and card width, dynamically
+    final screenWidth = constraints.maxWidth;
+    int columns = (screenWidth / (minCardWidth + horizontalGap)).floor();
+    columns = columns.clamp(2, maxColumns);
+
+    double totalGaps = (columns - 1) * horizontalGap;
+    double cardWidth = ((screenWidth - 2 * gridHorizontalPadding) - totalGaps) / columns;
+
     if (items.isEmpty) {
       return Padding(
-        padding: const EdgeInsets.only(top: 36),
+        padding: const EdgeInsets.all(24),
         child: Center(
           child: Text(
             "No products available in this section.",
@@ -132,32 +104,123 @@ class _HomeViewState extends State<HomeView> {
         ),
       );
     }
-    return GridView.builder(
-      itemCount: items.length,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4), // Minimal app-wide left/right padding
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,        // 3 product cards per row
-        crossAxisSpacing: 2,      // space between columns
-        mainAxisSpacing: 7,       // space between rows
-        childAspectRatio: 0.4,   // (width/height), tweak for look as needed
+
+    // Most typical aspect ratios of your card are between 0.55-0.67
+    final double aspectRatio = cardWidth / 260;
+
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: gridHorizontalPadding),
+      child: GridView.builder(
+        itemCount: items.length,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: columns,
+          crossAxisSpacing: horizontalGap,
+          mainAxisSpacing: 9,
+          childAspectRatio: aspectRatio,
+        ),
+        itemBuilder: (context, index) {
+          final pObj = items[index];
+          return ProductCell(
+            pObj: pObj,
+            margin: 0,      // grid handles spacing
+            weight: cardWidth,
+            onPressed: () async {
+              await Get.to(() => ProductDetails(pObj: pObj));
+              homeVM.serviceCallHome();
+            },
+            onCart: () {},
+          );
+        },
       ),
-      itemBuilder: (context, index) {
-        final pObj = items[index];
-        return ProductCell(
-          pObj: pObj,
-          margin: 0.7,    // Card-to-card horizontal margin inside each grid cell
-          onPressed: () async {
-            await Get.to(() => ProductDetails(pObj: pObj));
-            homeVM.serviceCallHome();
-          },
-          onCart: () {},
-          weight: 86,     // Fixes card width for 3 per row, matches your ProductCell
-        );
-      },
     );
   }
+
+  // Section tabs bar
+Widget buildSectionTabBar() {
+  return SizedBox(
+    height: 56,
+    child: ListView.builder(
+      scrollDirection: Axis.horizontal,
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      itemCount: sectionTabs.length,
+      itemBuilder: (context, index) {
+        final section = sectionTabs[index];
+        final isSelected = section == selectedSection;
+        final assetKey = section.toLowerCase().replaceAll(RegExp(r"[^a-z0-9]"), "_");
+        final assetPath = 'assets/img/$assetKey.png';
+
+        return GestureDetector(
+          onTap: () => setState(() => selectedSection = section),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8), // compact horizontal spacing
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                // The icon (small, no circle, no border!)
+                FutureBuilder<bool>(
+                  future: assetExists(assetPath),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done && snapshot.data == true) {
+                      return Image.asset(
+                        assetPath,
+                        width: 16,
+                        height: 16,
+                        color: isSelected ? TColor.primary : TColor.primaryText.withOpacity(0.68),
+                      );
+                    } else {
+                      // Simple small box or blank as placeholder
+                      return Icon(Icons.layers_outlined, 
+                        size: 16, 
+                        color: isSelected ? TColor.primary : TColor.primaryText.withOpacity(0.40),
+                      );
+                    }
+                  }
+                ),
+                const SizedBox(height: 5),
+                // Label: very small font, no bold, all caps for "tray" feeling
+                Text(
+                  section,
+                  style: TextStyle(
+                    fontSize: 11.3,
+                    fontWeight: FontWeight.w500,
+                    letterSpacing: 0.1,
+                    color: isSelected ? TColor.primary : TColor.primaryText.withOpacity(0.67),
+                    // Try to uppercase for clear tabs, or as per your preference
+                  ),
+                ),
+                // Highlight underline/rect for selected
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 190),
+                  margin: const EdgeInsets.only(top: 3),
+                  height: 2.5,
+                  width: isSelected ? 22 : 0,
+                  decoration: BoxDecoration(
+                    color: isSelected ? TColor.primary : Colors.transparent,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    ),
+  );
+}
+
+/// Checks if an asset exists (shows icon if so, else placeholder)
+Future<bool> assetExists(String asset) async {
+  try {
+    await rootBundle.load(asset);
+    return true;
+  } catch (_) {
+    return false;
+  }
+}
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -167,7 +230,7 @@ class _HomeViewState extends State<HomeView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Nav bar/header (unchanged)
+            // App bar/header (unchanged)
             Builder(
               builder: (_) {
                 try {
@@ -239,31 +302,16 @@ class _HomeViewState extends State<HomeView> {
               ),
             ),
             const SizedBox(height: 7),
-            // Section TabBar
             buildSectionTabBar(),
-            // The banner
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              child: Container(
-                width: double.infinity,
-                height: 90,
-                decoration: BoxDecoration(
-                  color: const Color(0xffF2F3F2),
-                  borderRadius: BorderRadius.circular(13),
-                ),
-                alignment: Alignment.center,
-                child: Image.asset(
-                  "assets/img/banner_top.png",
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            // Product Grid for Active Section
+            // Banner Responsive product grid for active section
             Expanded(
               child: Obx(() {
                 final items = getSectionProducts(selectedSection);
-                return SingleChildScrollView(
-                  child: buildVerticalProductGrid(items),
+                return LayoutBuilder(
+                  builder: (context, constraints) =>
+                    SingleChildScrollView(
+                      child: buildResponsiveProductGrid(items, constraints),
+                    ),
                 );
               }),
             ),

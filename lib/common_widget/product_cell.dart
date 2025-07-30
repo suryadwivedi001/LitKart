@@ -12,7 +12,7 @@ import 'package:online_groceries/common/color_extension.dart';
 class ProductCell extends StatelessWidget {
   final OfferProductModel pObj;
   final VoidCallback onPressed;
-  final double weight;
+  final double weight; // Card width: set by grid for responsiveness!
   final double margin;
   final VoidCallback? onCart;
 
@@ -22,8 +22,8 @@ class ProductCell extends StatelessWidget {
     super.key,
     required this.pObj,
     required this.onPressed,
-    this.weight = 86,
-    this.margin = .5,
+    required this.weight,
+    this.margin = 0,
     this.onCart,
   });
 
@@ -78,51 +78,47 @@ class ProductCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      borderRadius: BorderRadius.circular(9),
+      borderRadius: BorderRadius.circular(16),
       onTap: onPressed,
       child: Container(
         width: weight,
-        margin: EdgeInsets.symmetric(
-          horizontal: margin,
-          vertical: 4,
-        ),
+        margin: EdgeInsets.symmetric(horizontal: margin, vertical: 4),
         decoration: BoxDecoration(
-          color: Colors.white, // Card bg is always white
-          borderRadius: BorderRadius.circular(9),
-          // No border, no shadow
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
         ),
         child: Stack(
           children: [
             Column(
               crossAxisAlignment: mainContentAlignment,
               children: [
-                // IMAGE section: Only has light grey background if it's a PNG
+                // Image with optional light grey bg for PNG
                 Container(
                   decoration: BoxDecoration(
                     color: isPngImage ? const Color(0xFFF4F4F4) : Colors.white,
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(9)),
+                    borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
                   ),
                   child: ClipRRect(
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(9)),
+                    borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
                     child: CachedNetworkImage(
                       imageUrl: pObj.image ?? "",
                       width: double.infinity,
-                      height: 125,
+                      height: 120, // You can tune this if you want card taller
                       fit: BoxFit.cover,
                       placeholder: (context, url) => Container(
-                        height: 125,
+                        height: 120,
                         color: isPngImage ? const Color(0xFFF4F4F4) : Colors.white,
                         child: const Icon(Icons.image, size: 32, color: Colors.grey),
                       ),
                       errorWidget: (context, url, error) => Container(
-                        height: 125,
+                        height: 120,
                         color: isPngImage ? const Color(0xFFF4F4F4) : Colors.white,
                         child: const Icon(Icons.broken_image, size: 32, color: Colors.grey),
                       ),
                     ),
                   ),
                 ),
-                // CONTENT (always on white)
+                // Content area
                 Container(
                   color: Colors.white,
                   child: Padding(
@@ -185,21 +181,22 @@ class ProductCell extends StatelessWidget {
                 ),
               ],
             ),
+            // Floating ADD/quantity controls (unchanged)
             Positioned(
-              top: 90,
-              right: 8,
+              top: 95,
+              right: 0,
               child: Obx(() {
                 final quantity = getCartQuantity();
                 if (quantity == 0) {
                   return InkWell(
                     onTap: addToCart,
-                    borderRadius: BorderRadius.circular(9),
+                    borderRadius: BorderRadius.circular(8),
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
                       decoration: BoxDecoration(
                         color: TColor.white.withOpacity(0.95),
-                        border: Border.all(color: TColor.primary, width: 2),
-                        borderRadius: BorderRadius.circular(9),
+                        border: Border.all(color: TColor.primary, width: 1),
+                        borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
                         'ADD',
@@ -215,21 +212,21 @@ class ProductCell extends StatelessWidget {
                   return Container(
                     decoration: BoxDecoration(
                       color: TColor.primary,
-                      borderRadius: BorderRadius.circular(9),
+                      borderRadius: BorderRadius.circular(8),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         InkWell(
                           onTap: () => updateQuantity(quantity - 1),
-                          borderRadius: BorderRadius.circular(9),
+                          borderRadius: BorderRadius.circular(16),
                           child: const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 7, vertical: 5),
+                            padding: EdgeInsets.symmetric(horizontal: 7, vertical: 7),
                             child: Icon(Icons.remove, color: Colors.white, size: 15),
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 7),
+                          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                           child: Text(
                             '$quantity',
                             style: const TextStyle(
@@ -241,7 +238,7 @@ class ProductCell extends StatelessWidget {
                         ),
                         InkWell(
                           onTap: () => updateQuantity(quantity + 1),
-                          borderRadius: BorderRadius.circular(9),
+                          borderRadius: BorderRadius.circular(16),
                           child: const Padding(
                             padding: EdgeInsets.symmetric(horizontal: 7, vertical: 5),
                             child: Icon(Icons.add, color: Colors.white, size: 15),
