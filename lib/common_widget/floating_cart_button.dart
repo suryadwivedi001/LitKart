@@ -6,8 +6,8 @@ import 'package:online_groceries/view/my_cart/my_cart_view.dart';
 
 class FloatingCartButton extends StatefulWidget {
   final VoidCallback? onTap;
-  final bool hideOnAccount; // Add this parameter
-  
+  final bool hideOnAccount;
+
   const FloatingCartButton({super.key, this.onTap, this.hideOnAccount = false});
 
   @override
@@ -23,15 +23,15 @@ class _FloatingCartButtonState extends State<FloatingCartButton>
   void initState() {
     super.initState();
     _animationController = AnimationController(
-      duration: const Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 260),
       vsync: this,
     );
     _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 1),
+      begin: const Offset(0, 1.3),
       end: Offset.zero,
     ).animate(CurvedAnimation(
       parent: _animationController,
-      curve: Curves.elasticOut,
+      curve: Curves.easeOutCubic,
     ));
   }
 
@@ -52,108 +52,73 @@ class _FloatingCartButtonState extends State<FloatingCartButton>
   @override
   Widget build(BuildContext context) {
     final cartVM = Get.find<CartViewModel>();
-    
     return Obx(() {
-      // Simple logic: show if cart has items AND not hidden by parent
-      final bool shouldShow = cartVM.listArr.isNotEmpty && !widget.hideOnAccount;
-      
+      final bool shouldShow =
+          cartVM.listArr.isNotEmpty && !widget.hideOnAccount;
+
       if (shouldShow) {
         _animationController.forward();
       } else {
         _animationController.reverse();
       }
-      
+
       return shouldShow
           ? Positioned(
-              bottom: 90,
-              left: 20,
-              right: 20,
-              child: SlideTransition(
-                position: _slideAnimation,
-                child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 16),
-                  decoration: BoxDecoration(
-                    color: TColor.primary,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.15),
-                        blurRadius: 8,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                  ),
+              bottom: 8,
+              left: 0,
+              right: 0,
+              child: Center(
+                child: SlideTransition(
+                  position: _slideAnimation,
                   child: Material(
                     color: Colors.transparent,
                     child: InkWell(
                       onTap: _navigateToCart,
-                      borderRadius: BorderRadius.circular(12),
-                      child: Padding(
+                      borderRadius: BorderRadius.circular(33),
+                      child: Container(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 16,
+                            horizontal: 10, vertical: 10),
+                        decoration: BoxDecoration(
+                          color: TColor.primary, // <-- Pink!
+                          borderRadius: BorderRadius.circular(33),
                         ),
                         child: Row(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: Colors.white.withValues(alpha: 0.2),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: const Icon(
-                                Icons.shopping_cart,
-                                color: Colors.white,
-                                size: 20,
-                              ),
+                            Icon(
+                              Icons.shopping_cart,
+                              color: Colors.white,
+                              size: 26,
                             ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    "${cartVM.listArr.length} item${cartVM.listArr.length > 1 ? 's' : ''}",
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                    ),
+                            const SizedBox(width: 14),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "View Cart",
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 17,
+                                    letterSpacing: 0.13,
                                   ),
-                                  Text(
-                                    "Tap to review",
-                                    style: TextStyle(
-                                      color: Colors.white.withValues(alpha: 0.8),
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 6,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: Text(
-                                "\$${cartVM.cartTotalPrice.value}",
-                                style: TextStyle(
-                                  color: TColor.primary,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
                                 ),
-                              ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  "${cartVM.listArr.length} item${cartVM.listArr.length == 1 ? '' : 's'}",
+                                  style: TextStyle(
+                                    color: Colors.white.withOpacity(0.89),
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ],
                             ),
-                            const SizedBox(width: 8),
-                            const Icon(
+                            const SizedBox(width: 20),
+                            Icon(
                               Icons.arrow_forward_ios,
                               color: Colors.white,
-                              size: 16,
+                              size: 18,
                             ),
                           ],
                         ),
