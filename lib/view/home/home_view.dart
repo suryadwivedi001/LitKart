@@ -7,7 +7,6 @@ import '../../common_widget/category_cell.dart';
 import '../../common_widget/product_cell.dart';
 import '../../common_widget/section_view.dart';
 import '../../common_widget/custom_navigation_bar.dart';
-import '../../view_model/cart_view_model.dart';
 import '../../view_model/home_view_model.dart';
 
 class HomeView extends StatefulWidget {
@@ -18,107 +17,61 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  TextEditingController txtSearch = TextEditingController();
+  late final TextEditingController txtSearch;
   final homeVM = Get.put(HomeViewModel());
 
-  // The product grid builder remains unchanged
-  Widget buildProductGrid(List items) {
-    if (items.isEmpty) return const SizedBox.shrink();
-
-    if (items.length <= 3) {
-      // Single-row horizontal list for ≤3 products
-      return SizedBox(
-        height: 160,
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          itemCount: items.length,
-          itemBuilder: (context, index) {
-            var pObj = items[index];
-            return ProductCell(
-              pObj: pObj,
-              weight: 140,
-              margin: 6,
-              onPressed: () async {
-                await Get.to(() => ProductDetails(pObj: pObj));
-                homeVM.serviceCallHome();
-              },
-            );
-          },
-        ),
-      );
-    } else {
-      // 2-row vertical grid for 4+ products
-      int itemsPerColumn = 2;
-      int columns = (items.length / itemsPerColumn).ceil();
-
-      return SizedBox(
-        height: 340,
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          itemCount: columns,
-          itemBuilder: (context, colIndex) {
-            final firstIndex = colIndex * itemsPerColumn;
-            final secondIndex = firstIndex + 1;
-            return Container(
-              width: 140,
-              margin: const EdgeInsets.only(right: 8),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ProductCell(
-                    pObj: items[firstIndex],
-                    weight: 140,
-                    margin: 0,
-                    onPressed: () async {
-                      await Get.to(() => ProductDetails(pObj: items[firstIndex]));
-                      homeVM.serviceCallHome();
-                    },
-                  ),
-                  if (secondIndex < items.length) ...[
-                    const SizedBox(height: 8),
-                    ProductCell(
-                      pObj: items[secondIndex],
-                      weight: 140,
-                      margin: 0,
-                      onPressed: () async {
-                        await Get.to(() => ProductDetails(pObj: items[secondIndex]));
-                        homeVM.serviceCallHome();
-                      },
-                    ),
-                  ],
-                ],
-              ),
-            );
-          },
-        ),
-      );
-    }
+  @override
+  void initState() {
+    super.initState();
+    txtSearch = TextEditingController();
   }
 
   @override
   void dispose() {
+    txtSearch.dispose();
     Get.delete<HomeViewModel>();
     super.dispose();
   }
 
+  // Horizontal card list
+  Widget buildProductHorizontalList(List items) {
+    if (items.isEmpty) return const SizedBox.shrink();
+    return SizedBox(
+      height: 245, // Set height for vertical cards
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        itemCount: items.length,
+        itemBuilder: (context, index) {
+          final pObj = items[index];
+          return ProductCell(
+            pObj: pObj,
+            margin: 7, // Smaller margin for packed look
+            onPressed: () async {
+              await Get.to(() => ProductDetails(pObj: pObj));
+              homeVM.serviceCallHome();
+            },
+            onCart: () {}, // For compatibility
+          );
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    // NOTE: Top bars (address, search) are out of scroll view
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: TColor.white,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Address Bar
+            // Navigation Bar with fallback
             Builder(
-              builder: (context) {
+              builder: (_) {
                 try {
-                  return CustomNavigationBar();
-                } catch (e) {
-                  // Fallback (in rare case nav bar fails)
+                  return const CustomNavigationBar();
+                } catch (_) {
                   return Column(
                     children: [
                       Row(
@@ -170,8 +123,7 @@ class _HomeViewState extends State<HomeView> {
                 child: TextField(
                   controller: txtSearch,
                   decoration: InputDecoration(
-                    contentPadding:
-                        const EdgeInsets.symmetric(vertical: 16),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 16),
                     prefixIcon: Padding(
                       padding: const EdgeInsets.all(13.0),
                       child: Image.asset(
@@ -195,7 +147,7 @@ class _HomeViewState extends State<HomeView> {
             ),
             const SizedBox(height: 15),
 
-            // Scrollable Content
+            // Scrollable content area
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -205,7 +157,7 @@ class _HomeViewState extends State<HomeView> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Container(
-                        width: double.maxFinite,
+                        width: double.infinity,
                         height: 115,
                         decoration: BoxDecoration(
                           color: const Color(0xffF2F3F2),
@@ -221,24 +173,21 @@ class _HomeViewState extends State<HomeView> {
                     // Exclusive Offer Section
                     SectionView(
                       title: "Exclusive Offer",
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 20),
+                      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                       onPressed: () {},
                     ),
-                    Obx(() => buildProductGrid(homeVM.offerArr)),
+                    Obx(() => buildProductHorizontalList(homeVM.offerArr)),
                     // Best Selling Section
                     SectionView(
                       title: "Best Selling",
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 20),
+                      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                       onPressed: () {},
                     ),
-                    Obx(() => buildProductGrid(homeVM.bestSellingArr)),
-                    // Groceries Section (icons row)
+                    Obx(() => buildProductHorizontalList(homeVM.bestSellingArr)),
+                    // Groceries Section - Horizontal categories
                     SectionView(
                       title: "Groceries",
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 20),
+                      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                       onPressed: () {},
                     ),
                     SizedBox(
@@ -249,7 +198,7 @@ class _HomeViewState extends State<HomeView> {
                           padding: const EdgeInsets.symmetric(horizontal: 15),
                           itemCount: homeVM.groceriesArr.length,
                           itemBuilder: (context, index) {
-                            var pObj = homeVM.groceriesArr[index];
+                            final pObj = homeVM.groceriesArr[index];
                             return CategoryCell(
                               pObj: pObj,
                               onPressed: () {},
@@ -259,8 +208,8 @@ class _HomeViewState extends State<HomeView> {
                       ),
                     ),
                     const SizedBox(height: 15),
-                    // Additional Products Section
-                    Obx(() => buildProductGrid(homeVM.listArr)),
+                    // More products (optional)
+                    Obx(() => buildProductHorizontalList(homeVM.listArr)),
                     const SizedBox(height: 20),
                   ],
                 ),
