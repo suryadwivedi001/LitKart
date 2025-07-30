@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:online_groceries/view/home/product_details_view.dart';
-
 import '../../common/color_extension.dart';
-import '../../common_widget/category_cell.dart';
 import '../../common_widget/product_cell.dart';
-import '../../common_widget/section_view.dart';
 import '../../common_widget/custom_navigation_bar.dart';
 import '../../view_model/home_view_model.dart';
+import 'product_details_view.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -19,6 +16,24 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   late final TextEditingController txtSearch;
   final homeVM = Get.put(HomeViewModel());
+
+  // Section/tabs
+  final List<String> sectionTabs = [
+    "All",
+    "Exclusive Offer",
+    "Best Selling",
+    "Groceries",
+    "Rakhi",
+    "Electronics",
+    "Beauty",
+    "Snacks",
+    "Shakes",
+    "Juices",
+    "Printing",
+    "Forgettables",
+  ];
+
+  String selectedSection = "All";
 
   @override
   void initState() {
@@ -33,25 +48,101 @@ class _HomeViewState extends State<HomeView> {
     super.dispose();
   }
 
-  // Horizontal card list
-  Widget buildProductHorizontalList(List items) {
-    if (items.isEmpty) return const SizedBox.shrink();
+  // Maps section -> product list
+  List getSectionProducts(String section) {
+    switch (section) {
+      case 'Exclusive Offer':
+        return homeVM.offerArr;
+      case 'Best Selling':
+        return homeVM.bestSellingArr;
+      case 'Groceries':
+        return homeVM.listArr;
+      case 'Rakhi':
+      case 'Electronics':
+      case 'Beauty':
+      case 'Snacks':
+      case 'Shakes':
+      case 'Juices':
+      case 'Printing':
+      case 'Forgettables':
+        return [];
+      case 'All':
+      default:
+        return [
+          ...homeVM.offerArr,
+          ...homeVM.bestSellingArr,
+          ...homeVM.listArr,
+        ];
+    }
+  }
+
+  Widget buildSectionTabBar() {
     return SizedBox(
-      height: 245, // Set height for vertical cards
+      height: 44,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 14),
+        itemCount: sectionTabs.length,
+        itemBuilder: (context, index) {
+          final section = sectionTabs[index];
+          final isSelected = section == selectedSection;
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            child: GestureDetector(
+              onTap: () => setState(() => selectedSection = section),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
+                decoration: BoxDecoration(
+                  color: isSelected ? TColor.primary.withOpacity(0.11) : TColor.white,
+                  borderRadius: BorderRadius.circular(18),
+                  border: Border.all(
+                    color: isSelected ? TColor.primary : TColor.placeholder.withOpacity(0.16),
+                    width: isSelected ? 1.1 : 0.7,
+                  ),
+                ),
+                child: Text(
+                  section,
+                  style: TextStyle(
+                    color: isSelected ? TColor.primary : TColor.primaryText,
+                    fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget buildHorizontalProductTray(List items) {
+    if (items.isEmpty) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 36),
+        child: Center(
+          child: Text(
+            "No products available in this section.",
+            style: TextStyle(color: TColor.secondaryText),
+          ),
+        ),
+      );
+    }
+    return SizedBox(
+      height: 255, // controls vertical size of card tray (should fit ProductCell)
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 12),
         itemCount: items.length,
         itemBuilder: (context, index) {
           final pObj = items[index];
           return ProductCell(
             pObj: pObj,
-            margin: 7, // Smaller margin for packed look
+            margin: 7,
             onPressed: () async {
               await Get.to(() => ProductDetails(pObj: pObj));
               homeVM.serviceCallHome();
             },
-            onCart: () {}, // For compatibility
+            onCart: () {},
           );
         },
       ),
@@ -66,7 +157,7 @@ class _HomeViewState extends State<HomeView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Navigation Bar with fallback
+            // Navigation bar/header
             Builder(
               builder: (_) {
                 try {
@@ -77,21 +168,14 @@ class _HomeViewState extends State<HomeView> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Image.asset(
-                            "assets/img/color_logo.png",
-                            width: 25,
-                          ),
+                          Image.asset("assets/img/color_logo.png", width: 25),
                         ],
                       ),
                       const SizedBox(height: 4),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Image.asset(
-                            "assets/img/location.png",
-                            width: 16,
-                            height: 16,
-                          ),
+                          Image.asset("assets/img/location.png", width: 16, height: 16),
                           const SizedBox(width: 8),
                           Text(
                             "Dhaka, Banassre",
@@ -145,75 +229,39 @@ class _HomeViewState extends State<HomeView> {
                 ),
               ),
             ),
-            const SizedBox(height: 15),
+            const SizedBox(height: 13),
 
-            // Scrollable content area
+            // Section TabBar
+            buildSectionTabBar(),
+
+            // The banner, then the horizontal tray for the selected section
             Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Banner
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Container(
-                        width: double.infinity,
-                        height: 115,
-                        decoration: BoxDecoration(
-                          color: const Color(0xffF2F3F2),
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        alignment: Alignment.center,
-                        child: Image.asset(
-                          "assets/img/banner_top.png",
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    // Exclusive Offer Section
-                    SectionView(
-                      title: "Exclusive Offer",
-                      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-                      onPressed: () {},
-                    ),
-                    Obx(() => buildProductHorizontalList(homeVM.offerArr)),
-                    // Best Selling Section
-                    SectionView(
-                      title: "Best Selling",
-                      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-                      onPressed: () {},
-                    ),
-                    Obx(() => buildProductHorizontalList(homeVM.bestSellingArr)),
-                    // Groceries Section - Horizontal categories
-                    SectionView(
-                      title: "Groceries",
-                      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-                      onPressed: () {},
-                    ),
-                    SizedBox(
-                      height: 100,
-                      child: Obx(
-                        () => ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
-                          itemCount: homeVM.groceriesArr.length,
-                          itemBuilder: (context, index) {
-                            final pObj = homeVM.groceriesArr[index];
-                            return CategoryCell(
-                              pObj: pObj,
-                              onPressed: () {},
-                            );
-                          },
+              child: Obx(() {
+                final items = getSectionProducts(selectedSection);
+                return SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        child: Container(
+                          width: double.infinity,
+                          height: 115,
+                          decoration: BoxDecoration(
+                            color: const Color(0xffF2F3F2),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          alignment: Alignment.center,
+                          child: Image.asset(
+                            "assets/img/banner_top.png",
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 15),
-                    // More products (optional)
-                    Obx(() => buildProductHorizontalList(homeVM.listArr)),
-                    const SizedBox(height: 20),
-                  ],
-                ),
-              ),
+                      buildHorizontalProductTray(items),
+                    ],
+                  ),
+                );
+              }),
             ),
           ],
         ),

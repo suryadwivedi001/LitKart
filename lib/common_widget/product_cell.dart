@@ -22,7 +22,7 @@ class ProductCell extends StatelessWidget {
     super.key,
     required this.pObj,
     required this.onPressed,
-    this.weight = 120,
+    this.weight = 90,
     this.margin = .5,
     this.onCart,
   });
