@@ -79,7 +79,7 @@ class _FloatingCartButtonState extends State<FloatingCartButton>
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10, vertical: 10),
                         decoration: BoxDecoration(
-                          color: TColor.primary, // <-- Pink!
+                          color: TColor.primary, // !
                           borderRadius: BorderRadius.circular(33),
                         ),
                         child: Row(
