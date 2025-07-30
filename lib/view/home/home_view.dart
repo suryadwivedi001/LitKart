@@ -17,7 +17,7 @@ class _HomeViewState extends State<HomeView> {
   late final TextEditingController txtSearch;
   final homeVM = Get.put(HomeViewModel());
 
-  // Section/tabs
+  // Section/tabs to display—add/remove as needed
   final List<String> sectionTabs = [
     "All",
     "Exclusive Offer",
@@ -48,7 +48,8 @@ class _HomeViewState extends State<HomeView> {
     super.dispose();
   }
 
-  // Maps section -> product list
+  /// Returns OfferProductModel items for selected tab.
+  /// You can expand this to fetch sectioned data as your project grows.
   List getSectionProducts(String section) {
     switch (section) {
       case 'Exclusive Offer':
@@ -57,6 +58,7 @@ class _HomeViewState extends State<HomeView> {
         return homeVM.bestSellingArr;
       case 'Groceries':
         return homeVM.listArr;
+      // Sections with no data yet—later you can wire new lists in HomeViewModel
       case 'Rakhi':
       case 'Electronics':
       case 'Beauty':
@@ -76,24 +78,25 @@ class _HomeViewState extends State<HomeView> {
     }
   }
 
+  /// Top section/tabs nav as a horizontally scrollable bar.
   Widget buildSectionTabBar() {
     return SizedBox(
       height: 44,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 14),
+        padding: const EdgeInsets.symmetric(horizontal: 8),
         itemCount: sectionTabs.length,
         itemBuilder: (context, index) {
           final section = sectionTabs[index];
           final isSelected = section == selectedSection;
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 2),
             child: GestureDetector(
               onTap: () => setState(() => selectedSection = section),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
                 decoration: BoxDecoration(
-                  color: isSelected ? TColor.primary.withOpacity(0.11) : TColor.white,
+                  color: isSelected ? TColor.primary.withOpacity(0.12) : TColor.white,
                   borderRadius: BorderRadius.circular(18),
                   border: Border.all(
                     color: isSelected ? TColor.primary : TColor.placeholder.withOpacity(0.16),
@@ -115,10 +118,12 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  Widget buildHorizontalProductTray(List items) {
+  /// Product grid for active section: shows your finalized ProductCell (width 90),
+  /// three per row, vertical scroll, minimal left/right padding.
+  Widget buildVerticalProductGrid(List items) {
     if (items.isEmpty) {
       return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 36),
+        padding: const EdgeInsets.only(top: 36),
         child: Center(
           child: Text(
             "No products available in this section.",
@@ -127,25 +132,30 @@ class _HomeViewState extends State<HomeView> {
         ),
       );
     }
-    return SizedBox(
-      height: 255, // controls vertical size of card tray (should fit ProductCell)
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        itemCount: items.length,
-        itemBuilder: (context, index) {
-          final pObj = items[index];
-          return ProductCell(
-            pObj: pObj,
-            margin: 7,
-            onPressed: () async {
-              await Get.to(() => ProductDetails(pObj: pObj));
-              homeVM.serviceCallHome();
-            },
-            onCart: () {},
-          );
-        },
+    return GridView.builder(
+      itemCount: items.length,
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4), // Minimal app-wide left/right padding
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 3,        // 3 product cards per row
+        crossAxisSpacing: 2,      // space between columns
+        mainAxisSpacing: 7,       // space between rows
+        childAspectRatio: 0.4,   // (width/height), tweak for look as needed
       ),
+      itemBuilder: (context, index) {
+        final pObj = items[index];
+        return ProductCell(
+          pObj: pObj,
+          margin: 0.7,    // Card-to-card horizontal margin inside each grid cell
+          onPressed: () async {
+            await Get.to(() => ProductDetails(pObj: pObj));
+            homeVM.serviceCallHome();
+          },
+          onCart: () {},
+          weight: 86,     // Fixes card width for 3 per row, matches your ProductCell
+        );
+      },
     );
   }
 
@@ -157,7 +167,7 @@ class _HomeViewState extends State<HomeView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Navigation bar/header
+            // Nav bar/header (unchanged)
             Builder(
               builder: (_) {
                 try {
@@ -192,28 +202,27 @@ class _HomeViewState extends State<HomeView> {
                 }
               },
             ),
-            const SizedBox(height: 10),
-
+            const SizedBox(height: 6),
             // Search Bar
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 12),
               child: Container(
-                height: 52,
+                height: 47,
                 decoration: BoxDecoration(
                   color: const Color(0xffF2F3F2),
-                  borderRadius: BorderRadius.circular(15),
+                  borderRadius: BorderRadius.circular(14),
                 ),
                 alignment: Alignment.center,
                 child: TextField(
                   controller: txtSearch,
                   decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(vertical: 16),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 12),
                     prefixIcon: Padding(
-                      padding: const EdgeInsets.all(13.0),
+                      padding: const EdgeInsets.all(10.0),
                       child: Image.asset(
                         "assets/img/search.png",
-                        width: 20,
-                        height: 20,
+                        width: 18,
+                        height: 18,
                       ),
                     ),
                     border: InputBorder.none,
@@ -229,37 +238,32 @@ class _HomeViewState extends State<HomeView> {
                 ),
               ),
             ),
-            const SizedBox(height: 13),
-
+            const SizedBox(height: 7),
             // Section TabBar
             buildSectionTabBar(),
-
-            // The banner, then the horizontal tray for the selected section
+            // The banner
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              child: Container(
+                width: double.infinity,
+                height: 90,
+                decoration: BoxDecoration(
+                  color: const Color(0xffF2F3F2),
+                  borderRadius: BorderRadius.circular(13),
+                ),
+                alignment: Alignment.center,
+                child: Image.asset(
+                  "assets/img/banner_top.png",
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            // Product Grid for Active Section
             Expanded(
               child: Obx(() {
                 final items = getSectionProducts(selectedSection);
                 return SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                        child: Container(
-                          width: double.infinity,
-                          height: 115,
-                          decoration: BoxDecoration(
-                            color: const Color(0xffF2F3F2),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          alignment: Alignment.center,
-                          child: Image.asset(
-                            "assets/img/banner_top.png",
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      buildHorizontalProductTray(items),
-                    ],
-                  ),
+                  child: buildVerticalProductGrid(items),
                 );
               }),
             ),
