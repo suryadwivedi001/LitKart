@@ -4,6 +4,7 @@ import 'package:online_groceries/common_widget/product_cell.dart';
 import '../../common/color_extension.dart';
 import '../../model/offer_product_model.dart';
 import 'filter_view.dart';
+import 'package:online_groceries/common/globs.dart';
 
 class SearchView extends StatefulWidget {
   const SearchView({super.key});

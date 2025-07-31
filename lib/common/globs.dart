@@ -8,6 +8,7 @@ import '../main.dart';
 
 class Globs {
   static const appName = "LitKart";
+  static const double productCardAspectRatio = 0.35;
 
   static const userPayload = "user_payload";
   static const userLogin = "user_login";

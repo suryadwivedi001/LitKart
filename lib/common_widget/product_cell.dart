@@ -12,7 +12,7 @@ import 'package:online_groceries/common/color_extension.dart';
 class ProductCell extends StatelessWidget {
   final OfferProductModel pObj;
   final VoidCallback onPressed;
-  final double weight; // Card width: set by grid for responsiveness!
+  final double weight; // Card width: provided by outer grid responsive logic
   final double margin;
   final VoidCallback? onCart;
 
@@ -103,7 +103,7 @@ class ProductCell extends StatelessWidget {
                     child: CachedNetworkImage(
                       imageUrl: pObj.image ?? "",
                       width: double.infinity,
-                      height: 120, // You can tune this if you want card taller
+                      height: 120, // Adjust for proportions as needed
                       fit: BoxFit.cover,
                       placeholder: (context, url) => Container(
                         height: 120,
@@ -139,7 +139,7 @@ class ProductCell extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(top: 2, bottom: 2),
                             child: Text(
-                              "${pObj.unitValue ?? ""} ${pObj.unitName ?? ""}",
+                              "${pObj.unitValue ?? ""} ${pObj.unitName ?? ""}".trim(),
                               style: TextStyle(
                                 color: TColor.secondaryText,
                                 fontSize: 10,

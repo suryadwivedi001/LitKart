@@ -6,6 +6,8 @@ import '../../common_widget/product_cell.dart';
 import '../../common_widget/custom_navigation_bar.dart';
 import '../../view_model/home_view_model.dart';
 import 'product_details_view.dart';
+import 'package:online_groceries/common/globs.dart';
+
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -159,7 +161,7 @@ class _HomeViewState extends State<HomeView> {
                     width: isSelected ? 22 : 0,
                     decoration: BoxDecoration(
                       color: isSelected ? TColor.primary : Colors.transparent,
-                      borderRadius: BorderRadius.circular(2),
+                      borderRadius: BorderRadius.circular(16),
                     ),
                   ),
                 ],
@@ -206,7 +208,7 @@ class _HomeViewState extends State<HomeView> {
           crossAxisCount: columns,
           crossAxisSpacing: horizontalGap,
           mainAxisSpacing: 9,
-          childAspectRatio: aspectRatio,
+          childAspectRatio: Globs.productCardAspectRatio,
         ),
         itemBuilder: (context, index) {
           final pObj = items[index];

@@ -8,6 +8,8 @@ import '../../view_model/cart_view_model.dart';
 import '../../view_model/explore_item_view_model.dart';
 import '../home/product_details_view.dart';
 import 'filter_view.dart';
+import 'package:online_groceries/common/globs.dart';
+
 
 class ExploreDetailView extends StatefulWidget {
   final ExploreCategoryModel eObj;
@@ -41,63 +43,85 @@ class _ExploreDetailViewState extends State<ExploreDetailView> {
         elevation: 0,
         centerTitle: true,
         leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Image.asset(
-              "assets/img/back.png",
-              width: 20,
-              height: 20,
-            )),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Image.asset(
+            "assets/img/back.png",
+            width: 20,
+            height: 20,
+          ),
+        ),
         actions: [
           IconButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const FilterView()));
-              },
-              icon: Image.asset(
-                "assets/img/filter_ic.png",
-                width: 20,
-                height: 20,
-              )),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const FilterView(),
+                ),
+              );
+            },
+            icon: Image.asset(
+              "assets/img/filter_ic.png",
+              width: 20,
+              height: 20,
+            ),
+          ),
         ],
         title: Text(
           widget.eObj.catName ?? "",
           style: TextStyle(
-              color: TColor.primaryText,
-              fontSize: 13,
-              fontWeight: FontWeight.w400),
+            color: TColor.primaryText,
+            fontSize: 13,
+            fontWeight: FontWeight.w400,
+          ),
         ),
       ),
-      body: Obx(
-        () => GridView.builder(
-          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 0.75,
-              crossAxisSpacing: 15,
-              mainAxisSpacing: 15),
-          itemCount: listVM.listArr.length,
-          itemBuilder: ((context, index) {
-            var pObj = listVM.listArr[index];
-            return ProductCell(
-              pObj: pObj,
-              margin: 0,
-              weight: double.maxFinite,
-              onPressed: () async {
-                await Get.to(() => ProductDetails(
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          const double minCardWidth = 90;
+          const int maxColumns = 3;
+          const double horizontalGap = 8;
+          const double gridHorizontalPadding = 8;
+
+          final screenWidth = constraints.maxWidth;
+          int columns = (screenWidth / (minCardWidth + horizontalGap)).floor();
+          columns = columns.clamp(2, maxColumns);
+          final totalGaps = (columns - 1) * horizontalGap;
+          final cardWidth = ((screenWidth - 2 * gridHorizontalPadding) - totalGaps) / columns;
+
+          return Obx(() => Padding(
+                padding: EdgeInsets.symmetric(horizontal: gridHorizontalPadding),
+                child: GridView.builder(
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  itemCount: listVM.listArr.length,
+                  shrinkWrap: true,
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: columns,
+                    crossAxisSpacing: horizontalGap,
+                    mainAxisSpacing: 9, // matches HomeView spacing
+                    childAspectRatio: Globs.productCardAspectRatio,
+                  ),
+                  itemBuilder: (context, index) {
+                    var pObj = listVM.listArr[index];
+                    return ProductCell(
                       pObj: pObj,
-                    ));
-                listVM.serviceCallList();
-              },
-              onCart: () {
-                CartViewModel.serviceCallAddToCart(pObj.prodId ?? 0, 1, () {});
-              },
-            );
-          }),
-        ),
+                      margin: 0,
+                      weight: cardWidth,
+                      onPressed: () async {
+                        await Get.to(() => ProductDetails(pObj: pObj));
+                        listVM.serviceCallList();
+                      },
+                      onCart: () {
+                        CartViewModel.serviceCallAddToCart(pObj.prodId ?? 0, 1, () {});
+                      },
+                    );
+                  },
+                ),
+              ));
+        },
       ),
     );
   }
