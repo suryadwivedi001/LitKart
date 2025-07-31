@@ -18,6 +18,10 @@ class OfferProductModel {
   bool? isFav;
   double? avgRating;
 
+  // New fields for filtering
+  int? isOffer;       // typically 1 or 0 from backend
+  int? isBestSeller;  // typically 1 or 0 from backend
+
   OfferProductModel({
     this.offerPrice,
     this.startDate,
@@ -37,6 +41,8 @@ class OfferProductModel {
     this.typeName,
     this.isFav,
     this.avgRating,
+    this.isOffer,
+    this.isBestSeller,
   });
 
   OfferProductModel.fromJson(Map<String, dynamic> json) {
@@ -58,6 +64,9 @@ class OfferProductModel {
     typeName = json['type_name'];
     isFav = (json['is_fav'] as int? ?? 0) == 1;
     avgRating = double.tryParse(json['avg_rating'].toString()) ?? 0.0;
+
+    isOffer = json['is_offer'] ?? 0;
+    isBestSeller = json['is_best_seller'] ?? 0;
   }
 
   Map<String, dynamic> toJson() {
@@ -78,8 +87,11 @@ class OfferProductModel {
     data['image'] = image;
     data['cat_name'] = catName;
     data['type_name'] = typeName;
-    data['is_fav'] = isFav;
+    data['is_fav'] = isFav == true ? 1 : 0;
     data['avg_rating'] = avgRating;
+
+    data['is_offer'] = isOffer ?? 0;
+    data['is_best_seller'] = isBestSeller ?? 0;
     return data;
   }
 }

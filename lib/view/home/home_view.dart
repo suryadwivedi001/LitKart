@@ -32,12 +32,14 @@ class _HomeViewState extends State<HomeView> {
     "Printing",
     "Forgettables",
   ];
+
   String selectedSection = "All";
 
   @override
   void initState() {
     super.initState();
     txtSearch = TextEditingController();
+    homeVM.serviceCallHome();
   }
 
   @override
@@ -48,49 +50,45 @@ class _HomeViewState extends State<HomeView> {
   }
 
   List getSectionProducts(String section) {
+    final products = homeVM.productList.toList();
+
     switch (section) {
       case 'Exclusive Offer':
-        return homeVM.offerArr;
+        return products.where((p) => p.isOffer == 1).toList();
       case 'Best Selling':
-        return homeVM.bestSellingArr;
-      case 'Groceries':
-        return homeVM.listArr;
-      case 'Rakhi':
-      case 'Electronics':
-      case 'Beauty':
-      case 'Snacks':
-      case 'Shakes':
-      case 'Juices':
-      case 'Printing':
-      case 'Forgettables':
-        return [];
+        return products.where((p) => p.isBestSeller == 1).toList();
       case 'All':
+        return products;
       default:
-        return [
-          ...homeVM.offerArr,
-          ...homeVM.bestSellingArr,
-          ...homeVM.listArr,
-        ];
+        // Null-safe category comparison
+        return products
+            .where((p) =>
+                (p.catName?.toLowerCase() ?? '') == section.toLowerCase())
+            .toList();
     }
   }
 
   String sectionToKey(String section) =>
       section.toLowerCase().replaceAll(RegExp(r"[^a-z0-9]"), "_");
 
-  // Checks for PNG first then JPG for bg, returns path or null
+  Future<bool> assetExists(String asset) async {
+    try {
+      await rootBundle.load(asset);
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
   Future<String?> sectionBgImagePath(String section) async {
     final pngPath = 'assets/img/${sectionToKey(section)}_bg.png';
     final jpgPath = 'assets/img/${sectionToKey(section)}_bg.jpg';
-    print('[debug] checking png bg : $pngPath');
     try {
       await rootBundle.load(pngPath);
-      print('[debug] found png bg : $pngPath');
       return pngPath;
     } catch (_) {
       try {
         await rootBundle.load(jpgPath);
-        print('[debug] found jpg bg : $pngPath');
-
         return jpgPath;
       } catch (_) {
         return null;
@@ -108,8 +106,10 @@ class _HomeViewState extends State<HomeView> {
         itemBuilder: (context, index) {
           final section = sectionTabs[index];
           final isSelected = section == selectedSection;
-          final assetKey = section.toLowerCase().replaceAll(RegExp(r"[^a-z0-9]"), "_");
+          final assetKey =
+              section.toLowerCase().replaceAll(RegExp(r"[^a-z0-9]"), "_");
           final assetPath = 'assets/img/$assetKey.png';
+
           return GestureDetector(
             onTap: () => setState(() => selectedSection = section),
             child: Container(
@@ -118,23 +118,28 @@ class _HomeViewState extends State<HomeView> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   FutureBuilder<bool>(
-                    future: assetExists(assetPath),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done && snapshot.data == true) {
-                        return Image.asset(
-                          assetPath,
-                          width: 16,
-                          height: 16,
-                          color: isSelected ? TColor.primary : TColor.primaryText.withOpacity(0.68),
-                        );
-                      } else {
-                        return Icon(Icons.layers_outlined, 
-                          size: 16, 
-                          color: isSelected ? TColor.primary : TColor.primaryText.withOpacity(0.42),
-                        );
-                      }
-                    }
-                  ),
+                      future: assetExists(assetPath),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done &&
+                            snapshot.data == true) {
+                          return Image.asset(
+                            assetPath,
+                            width: 16,
+                            height: 16,
+                            color: isSelected
+                                ? TColor.primary
+                                : TColor.primaryText.withOpacity(0.68),
+                          );
+                        } else {
+                          return Icon(
+                            Icons.layers_outlined,
+                            size: 16,
+                            color: isSelected
+                                ? TColor.primary
+                                : TColor.primaryText.withOpacity(0.42),
+                          );
+                        }
+                      }),
                   const SizedBox(height: 5),
                   Text(
                     section,
@@ -142,7 +147,9 @@ class _HomeViewState extends State<HomeView> {
                       fontSize: 11.3,
                       fontWeight: FontWeight.w500,
                       letterSpacing: 0.1,
-                      color: isSelected ? TColor.primary : TColor.primaryText.withOpacity(0.67),
+                      color: isSelected
+                          ? TColor.primary
+                          : TColor.primaryText.withOpacity(0.67),
                     ),
                   ),
                   AnimatedContainer(
@@ -162,15 +169,6 @@ class _HomeViewState extends State<HomeView> {
         },
       ),
     );
-  }
-
-  Future<bool> assetExists(String asset) async {
-    try {
-      await rootBundle.load(asset);
-      return true;
-    } catch (_) {
-      return false;
-    }
   }
 
   Widget buildResponsiveProductGrid(List items, BoxConstraints constraints) {
@@ -196,7 +194,7 @@ class _HomeViewState extends State<HomeView> {
       );
     }
 
-    final double aspectRatio = cardWidth / 260;
+    final double aspectRatio = cardWidth / 240;
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: gridHorizontalPadding),
@@ -335,10 +333,9 @@ class _HomeViewState extends State<HomeView> {
                   child: Obx(() {
                     final items = getSectionProducts(selectedSection);
                     return LayoutBuilder(
-                      builder: (context, constraints) =>
-                          SingleChildScrollView(
-                            child: buildResponsiveProductGrid(items, constraints),
-                          ),
+                      builder: (context, constraints) => SingleChildScrollView(
+                        child: buildResponsiveProductGrid(items, constraints),
+                      ),
                     );
                   }),
                 ),
