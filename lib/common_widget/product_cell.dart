@@ -92,7 +92,7 @@ class ProductCell extends StatelessWidget {
             Column(
               crossAxisAlignment: mainContentAlignment,
               children: [
-                // Image with optional light grey bg for PNG
+                // Square product image using `weight` for both width and height
                 Container(
                   decoration: BoxDecoration(
                     color: isPngImage ? const Color(0xFFF4F4F4) : Colors.white,
@@ -102,16 +102,18 @@ class ProductCell extends StatelessWidget {
                     borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
                     child: CachedNetworkImage(
                       imageUrl: pObj.image ?? "",
-                      width: double.infinity,
-                      height: 120, // Adjust for proportions as needed
+                      width: weight,
+                      height: weight, // <--- Ensures square image
                       fit: BoxFit.cover,
                       placeholder: (context, url) => Container(
-                        height: 120,
+                        width: weight,
+                        height: weight,
                         color: isPngImage ? const Color(0xFFF4F4F4) : Colors.white,
                         child: const Icon(Icons.image, size: 32, color: Colors.grey),
                       ),
                       errorWidget: (context, url, error) => Container(
-                        height: 120,
+                        width: weight,
+                        height: weight,
                         color: isPngImage ? const Color(0xFFF4F4F4) : Colors.white,
                         child: const Icon(Icons.broken_image, size: 32, color: Colors.grey),
                       ),
@@ -183,7 +185,7 @@ class ProductCell extends StatelessWidget {
             ),
             // Floating ADD/quantity controls (unchanged)
             Positioned(
-              top: 95,
+              top: weight - 25, // float over lower part of the square image
               right: 0,
               child: Obx(() {
                 final quantity = getCartQuantity();
