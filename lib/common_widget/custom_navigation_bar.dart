@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:online_groceries/common/color_extension.dart';
-import 'package:online_groceries/view_model/cart_view_model.dart';
 import 'package:online_groceries/view_model/addres_view_mode.dart';
 import 'package:online_groceries/model/address_model.dart';
-import 'package:online_groceries/view/my_cart/my_cart_view.dart';
 import 'package:online_groceries/view/account/address_list_view.dart';
+import 'package:online_groceries/view/account/account_view.dart'; // ✅ Make sure this path is correct
 
 class CustomNavigationBar extends StatefulWidget {
   final VoidCallback? onCartTap;
@@ -45,12 +44,12 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
 
   void _handleLocationTap() {
     Get.to(() => AddressListView(
-      didSelect: (AddressModel selectedAddress) {
-        setState(() {
-          selectedLocation = _formatAddressForDisplay(selectedAddress);
-        });
-      },
-    ));
+          didSelect: (AddressModel selectedAddress) {
+            setState(() {
+              selectedLocation = _formatAddressForDisplay(selectedAddress);
+            });
+          },
+        ));
   }
 
   String _formatAddressForDisplay(AddressModel address) {
@@ -68,11 +67,11 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
     return "Select Address";
   }
 
-  void _navigateToCart() {
+  void _navigateToAccount() {
     if (widget.onCartTap != null) {
       widget.onCartTap!();
     } else {
-      Get.to(() => const MyCartView());
+      Get.to(() => const AccountView()); // ✅ Account screen navigation
     }
   }
 
@@ -146,55 +145,21 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                 ),
               ),
             ),
-            // Cart icon (right, updates real time)
-            Obx(() {
-              final cartVM = Get.find<CartViewModel>();
-              final itemCount = cartVM.listArr.length;
 
-              return InkWell(
-                onTap: _navigateToCart,
-                borderRadius: BorderRadius.circular(8),
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  child: Stack(
-                    children: [
-                      Image.asset(
-                        "assets/img/cart_tab.png",
-                        width: 28,
-                        height: 28,
-                        color: TColor.primaryText,
-                      ),
-                      if (widget.showCartBadge && itemCount > 0)
-                        Positioned(
-                          right: -2,
-                          top: -2,
-                          child: Container(
-                            padding: const EdgeInsets.all(4),
-                            constraints: const BoxConstraints(
-                              minWidth: 18,
-                              minHeight: 18,
-                            ),
-                            decoration: BoxDecoration(
-                              color: TColor.primary,
-                              shape: BoxShape.circle,
-                              border: Border.all(color: Colors.white, width: 1),
-                            ),
-                            child: Text(
-                              itemCount > 99 ? '99+' : itemCount.toString(),
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
+            // Account icon (right)
+            InkWell(
+              onTap: _navigateToAccount,
+              borderRadius: BorderRadius.circular(8),
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                child: Image.asset(
+                  "assets/img/account_tab.png", // ✅ new icon
+                  width: 28,
+                  height: 28,
+                  color: TColor.primaryText,
                 ),
-              );
-            }),
+              ),
+            ),
           ],
         ),
       ),
