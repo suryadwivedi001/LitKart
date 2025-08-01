@@ -99,6 +99,7 @@ class SVKey {
   static const svRemoveCart = '${baseUrl}remove_cart';
   static const svCartList = '${baseUrl}cart_list';
   static const svOrderPlace = '${baseUrl}order_place';
+  static const svOrderAgain = '${baseUrl}previously_ordered_products';
 
   static const svAddDeliveryAddress = '${baseUrl}add_delivery_address';
   static const svUpdateDeliveryAddress = '${baseUrl}update_delivery_address';

@@ -10,6 +10,7 @@ import '../../view_model/cart_view_model.dart';
 import '../explore/explore_view.dart';
 import '../favourite/favourite_view.dart';
 import '../my_cart/my_cart_view.dart';
+import '../../common_widget/order_again_tab.dart'; // Import your new Order Again tab widget here
 
 class MainTabView extends StatefulWidget {
   const MainTabView({super.key});
@@ -30,14 +31,14 @@ class _MainTabViewState extends State<MainTabView>
     super.initState();
 
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
-    
-    // IMPORTANT: Change length from 4 to 3 tabs
-    controller = TabController(length: 3, vsync: this);
+
+    // Update TabController length to 4 for the new tab
+    controller = TabController(length: 4, vsync: this);
 
     controller?.addListener(() {
       selectTab = controller?.index ?? 0;
 
-      // The "Favourite" tab index is now 2 (last tab)
+      // Refresh favourites only when Favourite tab is active (index 2)
       if (selectTab == 2) {
         favVM.serviceCalList();
       }
@@ -56,15 +57,15 @@ class _MainTabViewState extends State<MainTabView>
     return Scaffold(
       body: Stack(
         children: [
-          // IMPORTANT: remove AccountView from children
           TabBarView(controller: controller, children: [
             const HomeView(),
             const ExploreView(),
             const FavoritesView(),
+            const OrderAgainTab(), // Your new Order Again section widget
           ]),
 
-          // Show floating cart button only when NOT on the last tab (Favourite) - adjust here
-          if (selectTab != 2)
+          // Show floating cart button on all tabs except "Order Again" (index 3)
+          if (selectTab != 3)
             FloatingCartButton(
               onTap: () {
                 Get.to(() => const MyCartView());
@@ -74,17 +75,19 @@ class _MainTabViewState extends State<MainTabView>
       ),
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(15),
-              topRight: Radius.circular(15),
-            ),
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.black26,
-                  blurRadius: 3,
-                  offset: Offset(0, -2))
-            ]),
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(15),
+            topRight: Radius.circular(15),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 3,
+              offset: Offset(0, -2),
+            )
+          ],
+        ),
         child: BottomAppBar(
           color: Colors.transparent,
           elevation: 0,
@@ -104,7 +107,6 @@ class _MainTabViewState extends State<MainTabView>
               fontSize: 11,
               fontWeight: FontWeight.w400,
             ),
-            // IMPORTANT: Remove the Account tab entirely here
             tabs: [
               Tab(
                 text: "Shop",
@@ -131,6 +133,15 @@ class _MainTabViewState extends State<MainTabView>
                   width: 25,
                   height: 25,
                   color: selectTab == 2 ? TColor.primary : TColor.primaryText,
+                ),
+              ),
+              Tab(
+                text: "Order Again",
+                icon: Image.asset(
+                  "assets/img/order_again_tab.png", // Add this asset or reuse an icon
+                  width: 25,
+                  height: 25,
+                  color: selectTab == 3 ? TColor.primary : TColor.primaryText,
                 ),
               ),
             ],
