@@ -7,6 +7,7 @@ import '../../common_widget/custom_navigation_bar.dart';
 import '../../view_model/home_view_model.dart';
 import 'product_details_view.dart';
 import 'package:online_groceries/common/globs.dart';
+import 'package:flutter/foundation.dart';
 
 
 class HomeView extends StatefulWidget {
@@ -20,28 +21,23 @@ class _HomeViewState extends State<HomeView> {
   late final TextEditingController txtSearch;
   final homeVM = Get.put(HomeViewModel());
 
-  final List<String> sectionTabs = [
-    "All",
-    "Exclusive Offer",
-    "Best Selling",
-    "Groceries",
-    "Rakhi",
-    "Electronics",
-    "Beauty",
-    "Snacks",
-    "Shakes",
-    "Juices",
-    "Printing",
-    "Forgettables",
-  ];
+  // Reactive dynamic tabs list
+  final RxList<String> dynamicSectionTabs = <String>[].obs;
 
+  // Currently selected tab
   String selectedSection = "All";
 
   @override
   void initState() {
     super.initState();
     txtSearch = TextEditingController();
+
+    // Call API and then build tabs dynamically when product list updates
     homeVM.serviceCallHome();
+
+    ever(homeVM.productList, (_) {
+      _buildDynamicTabs();
+    });
   }
 
   @override
@@ -51,22 +47,48 @@ class _HomeViewState extends State<HomeView> {
     super.dispose();
   }
 
+  void _buildDynamicTabs() {
+    final products = homeVM.productList;
+
+    // Extract unique, non-null, non-empty type names (case insensitive)
+    final uniqueTypes = products
+        .map((p) => (p.typeName ?? '').trim())
+        .where((name) => name.isNotEmpty)
+        .map((name) => name.toLowerCase())
+        .toSet()
+        .toList();
+
+    // Sort alphabetically (case insensitive)
+    uniqueTypes.sort((a, b) => a.compareTo(b));
+
+    // Build tab names with formatted casing
+    List<String> tabs = ["All"];
+    tabs.addAll(uniqueTypes.map((name) => _capitalize(name)));
+
+    // Update reactive tab list, avoid redundant assignment to improve performance
+    if (!listEquals(dynamicSectionTabs, tabs)) {
+      dynamicSectionTabs.assignAll(tabs);
+      // Optional: reset selectedSection when tabs change and "All" tab is always present
+      if (!dynamicSectionTabs.contains(selectedSection)) {
+        selectedSection = "All"; // reset to All if previous selection is invalid
+      }
+      setState(() {}); // rebuild tab bar
+    }
+  }
+
+  String _capitalize(String s) => s.isEmpty ? s : '${s[0].toUpperCase()}${s.substring(1)}';
+
+  // Filtering products based on selectedSection
   List getSectionProducts(String section) {
     final products = homeVM.productList.toList();
 
-    switch (section) {
-      case 'Exclusive Offer':
-        return products.where((p) => p.isOffer == 1).toList();
-      case 'Best Selling':
-        return products.where((p) => p.isBestSeller == 1).toList();
-      case 'All':
-        return products;
-      default:
-        // Null-safe category comparison
-        return products
-            .where((p) =>
-                (p.catName?.toLowerCase() ?? '') == section.toLowerCase())
-            .toList();
+    if (section == "All") {
+      // Show all products (including those without typeName)
+      return products;
+    } else {
+      // Filter by matching type name case-insensitive
+      return products.where((p) =>
+          (p.typeName?.toLowerCase() ?? '') == section.toLowerCase()).toList();
     }
   }
 
@@ -99,78 +121,83 @@ class _HomeViewState extends State<HomeView> {
   }
 
   Widget buildSectionTabBar() {
-    return SizedBox(
-      height: 56,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        itemCount: sectionTabs.length,
-        itemBuilder: (context, index) {
-          final section = sectionTabs[index];
-          final isSelected = section == selectedSection;
-          final assetKey =
-              section.toLowerCase().replaceAll(RegExp(r"[^a-z0-9]"), "_");
-          final assetPath = 'assets/img/$assetKey.png';
+    return Obx(() {
+      return SizedBox(
+        height: 56,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          itemCount: dynamicSectionTabs.length,
+          itemBuilder: (context, index) {
+            final section = dynamicSectionTabs[index];
+            final isSelected = section == selectedSection;
+            final assetKey = sectionToKey(section);
+            final assetPath = 'assets/img/$assetKey.png';
 
-          return GestureDetector(
-            onTap: () => setState(() => selectedSection = section),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  FutureBuilder<bool>(
-                      future: assetExists(assetPath),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.done &&
-                            snapshot.data == true) {
-                          return Image.asset(
-                            assetPath,
-                            width: 16,
-                            height: 16,
-                            color: isSelected
-                                ? TColor.primary
-                                : TColor.primaryText.withOpacity(0.68),
-                          );
-                        } else {
-                          return Icon(
-                            Icons.layers_outlined,
-                            size: 16,
-                            color: isSelected
-                                ? TColor.primary
-                                : TColor.primaryText.withOpacity(0.42),
-                          );
-                        }
-                      }),
-                  const SizedBox(height: 5),
-                  Text(
-                    section,
-                    style: TextStyle(
-                      fontSize: 11.3,
-                      fontWeight: FontWeight.w500,
-                      letterSpacing: 0.1,
-                      color: isSelected
-                          ? TColor.primary
-                          : TColor.primaryText.withOpacity(0.67),
+            return GestureDetector(
+              onTap: () {
+                setState(() {
+                  selectedSection = section;
+                });
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    FutureBuilder<bool>(
+                        future: assetExists(assetPath),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.done &&
+                              snapshot.data == true) {
+                            return Image.asset(
+                              assetPath,
+                              width: 16,
+                              height: 16,
+                              color: isSelected
+                                  ? TColor.primary
+                                  : TColor.primaryText.withOpacity(0.68),
+                            );
+                          } else {
+                            return Icon(
+                              Icons.layers_outlined,
+                              size: 16,
+                              color: isSelected
+                                  ? TColor.primary
+                                  : TColor.primaryText.withOpacity(0.42),
+                            );
+                          }
+                        }),
+                    const SizedBox(height: 5),
+                    Text(
+                      section,
+                      style: TextStyle(
+                        fontSize: 11.3,
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: 0.1,
+                        color: isSelected
+                            ? TColor.primary
+                            : TColor.primaryText.withOpacity(0.67),
+                      ),
                     ),
-                  ),
-                  AnimatedContainer(
-                    duration: const Duration(milliseconds: 190),
-                    margin: const EdgeInsets.only(top: 3),
-                    height: 2.5,
-                    width: isSelected ? 22 : 0,
-                    decoration: BoxDecoration(
-                      color: isSelected ? TColor.primary : Colors.transparent,
-                      borderRadius: BorderRadius.circular(16),
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 190),
+                      margin: const EdgeInsets.only(top: 3),
+                      height: 2.5,
+                      width: isSelected ? 22 : 0,
+                      decoration: BoxDecoration(
+                        color: isSelected ? TColor.primary : Colors.transparent,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          );
-        },
-      ),
-    );
+            );
+          },
+        ),
+      );
+    });
   }
 
   Widget buildResponsiveProductGrid(List items, BoxConstraints constraints) {
@@ -195,8 +222,6 @@ class _HomeViewState extends State<HomeView> {
         ),
       );
     }
-
-    final double aspectRatio = cardWidth / 240;
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: gridHorizontalPadding),
@@ -256,7 +281,7 @@ class _HomeViewState extends State<HomeView> {
                 );
               },
             ),
-            // FOREGROUND layer (all functional UI, unchanged)
+            // FOREGROUND layer (all functional UI remains)
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -326,11 +351,17 @@ class _HomeViewState extends State<HomeView> {
                           fontWeight: FontWeight.w400,
                         ),
                       ),
+                      onChanged: (value) {
+                        // Optional: implement search filter logic here if needed
+                        setState(() {});
+                      },
                     ),
                   ),
                 ),
                 const SizedBox(height: 7),
+
                 buildSectionTabBar(),
+
                 Expanded(
                   child: Obx(() {
                     final items = getSectionProducts(selectedSection);
