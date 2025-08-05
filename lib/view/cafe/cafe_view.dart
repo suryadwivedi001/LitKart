@@ -6,7 +6,8 @@ import '../../common_widget/cafe_card.dart';
 class CafeView extends StatelessWidget {
   CafeView({Key? key}) : super(key: key);
 
-  final CafeViewModel cafeVM = Get.find<CafeViewModel>();
+  // Register CafeViewModel if not already registered (fixes "not found" error)
+  final CafeViewModel cafeVM = Get.put(CafeViewModel());
   final RxString searchTerm = "".obs;
 
   @override
