@@ -3,14 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:online_groceries/view/home/home_view.dart';
 import 'package:online_groceries/common_widget/floating_cart_button.dart';
-
 import '../../common/color_extension.dart';
-import '../../view_model/favourite_view_model.dart';
 import '../../view_model/cart_view_model.dart';
 import '../explore/explore_view.dart';
-import '../favourite/favourite_view.dart';
+import '../cafe/cafe_view.dart';
 import '../my_cart/my_cart_view.dart';
-import '../../common_widget/order_again_tab.dart'; // Import your new Order Again tab widget here
+import '../../common_widget/order_again_tab.dart';
 
 class MainTabView extends StatefulWidget {
   const MainTabView({super.key});
@@ -23,7 +21,6 @@ class _MainTabViewState extends State<MainTabView>
     with SingleTickerProviderStateMixin {
   TabController? controller;
   int selectTab = 0;
-  final favVM = Get.put(FavoriteViewModel());
   final cartVM = Get.put(CartViewModel());
 
   @override
@@ -32,24 +29,19 @@ class _MainTabViewState extends State<MainTabView>
 
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
 
-    // Update TabController length to 4 for the new tab
     controller = TabController(length: 4, vsync: this);
 
     controller?.addListener(() {
-      selectTab = controller?.index ?? 0;
-
-      // Refresh favourites only when Favourite tab is active (index 2)
-      if (selectTab == 2) {
-        favVM.serviceCalList();
-      }
-      setState(() {});
+      setState(() {
+        selectTab = controller?.index ?? 0;
+      });
     });
   }
 
   @override
   void dispose() {
-    super.dispose();
     controller?.dispose();
+    super.dispose();
   }
 
   @override
@@ -60,11 +52,10 @@ class _MainTabViewState extends State<MainTabView>
           TabBarView(controller: controller, children: [
             const HomeView(),
             const ExploreView(),
-            const FavoritesView(),
-            const OrderAgainTab(), // Your new Order Again section widget
+            CafeView(),
+            const OrderAgainTab(),
           ]),
 
-          // Show floating cart button on all tabs except "Order Again" (index 3)
           if (selectTab != 3)
             FloatingCartButton(
               onTap: () {
@@ -127,7 +118,7 @@ class _MainTabViewState extends State<MainTabView>
                 ),
               ),
               Tab(
-                text: "Favourite",
+                text: "Cafe",
                 icon: Image.asset(
                   "assets/img/fav_tab.png",
                   width: 25,
@@ -138,7 +129,7 @@ class _MainTabViewState extends State<MainTabView>
               Tab(
                 text: "Order Again",
                 icon: Image.asset(
-                  "assets/img/order_again_tab.png", // Add this asset or reuse an icon
+                  "assets/img/order_again_tab.png",
                   width: 25,
                   height: 25,
                   color: selectTab == 3 ? TColor.primary : TColor.primaryText,

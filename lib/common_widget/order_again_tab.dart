@@ -5,10 +5,9 @@ import '../common/color_extension.dart';
 import '../common/globs.dart';
 import '../model/offer_product_model.dart';
 import '../common_widget/product_cell.dart';
-
-import '../view/home/product_details_view.dart';               // ProductDetails widget
+import '../view/home/product_details_view.dart';
 import '../view_model/cart_view_model.dart';
-import '../view_model/splash_view_model.dart';                 // Import SplashViewModel
+import '../view_model/splash_view_model.dart';
 
 class OrderAgainTab extends StatefulWidget {
   const OrderAgainTab({super.key});
@@ -40,8 +39,6 @@ class _OrderAgainTabState extends State<OrderAgainTab> {
       Globs.showHUD(status: "Loading...");
 
       String authToken = splashVM.userPayload.value.authToken ?? "";
-      print("OrderAgainTab: Using token from SplashViewModel: `$authToken`");
-
       if (authToken.isEmpty) {
         setState(() {
           errorMessage = "Please log in to view previously ordered products.";
@@ -56,20 +53,16 @@ class _OrderAgainTabState extends State<OrderAgainTab> {
 
       final response = await GetConnect().post(
         url,
-        {},  // empty POST body as API requires
+        {}, // empty POST body as API requires
         headers: {
           "access_token": authToken,
         },
       );
 
-      print("OrderAgain API status: ${response.statusCode}");
-      print("OrderAgain response: ${response.body}");
-
       if (!mounted) return;
 
       if (response.statusCode == 200) {
         final body = response.body;
-
         if (body["status"] == "1" &&
             body["payload"] != null &&
             body["payload"]["product_list"] != null) {
@@ -96,7 +89,6 @@ class _OrderAgainTabState extends State<OrderAgainTab> {
       }
     } catch (e) {
       if (!mounted) return;
-      print("Error fetching previously ordered products: $e");
       setState(() {
         errorMessage = "An error occurred. Please try again.";
         productList = [];
@@ -155,24 +147,52 @@ class _OrderAgainTabState extends State<OrderAgainTab> {
                   ),
                 )
               : Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-                  child: GridView.builder(
-                    itemCount: productList.length,
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 0.70,
-                      crossAxisSpacing: 16,
-                      mainAxisSpacing: 16,
-                    ),
-                    itemBuilder: (context, index) {
-                      final product = productList[index];
-                      return ProductCell(
-                        pObj: product,
-                        margin: 0,
-                        weight: MediaQuery.of(context).size.width * 0.43,
-                        onPressed: () => navigateToProductDetail(product),
-                        onCart: () => addToCart(product),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      // Responsive grid calculation (3 per row if wide enough)
+                      const double minCardWidth = 90;
+                      const int maxColumns = 3;
+                      const double horizontalGap = 8;
+                      const double gridHorizontalPadding = 0;
+                      final screenWidth = constraints.maxWidth;
+                      int columns = (screenWidth / (minCardWidth + horizontalGap)).floor();
+                      columns = columns.clamp(2, maxColumns);
+                      final totalGaps = (columns - 1) * horizontalGap;
+                      final cardWidth = ((screenWidth - 2 * gridHorizontalPadding) - totalGaps) / columns;
+
+                      if (productList.isEmpty) {
+                        return Padding(
+                          padding: const EdgeInsets.all(24),
+                          child: Center(
+                            child: Text(
+                              "No previously ordered products found.",
+                              style: TextStyle(color: TColor.secondaryText),
+                            ),
+                          ),
+                        );
+                      }
+
+                      return GridView.builder(
+                        itemCount: productList.length,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: columns,
+                          crossAxisSpacing: horizontalGap,
+                          mainAxisSpacing: 16,
+                          childAspectRatio: 0.45,
+                        ),
+                        itemBuilder: (context, index) {
+                          final product = productList[index];
+                          return ProductCell(
+                            pObj: product,
+                            margin: 0,
+                            weight: cardWidth,
+                            onPressed: () => navigateToProductDetail(product),
+                            onCart: () => addToCart(product),
+                          );
+                        },
                       );
                     },
                   ),

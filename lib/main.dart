@@ -8,12 +8,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'common/color_extension.dart';
 import 'common/my_http_overrides.dart';
+import 'package:online_groceries/view_model/home_view_model.dart';
+
 
 SharedPreferences? prefs;
 void main() async {
   HttpOverrides.global = MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
   prefs = await SharedPreferences.getInstance();
+  Get.put(HomeViewModel());
   runApp(const MyApp());
 }
 
