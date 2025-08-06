@@ -5,9 +5,9 @@ import 'package:flutter/services.dart';
 import '../../common/color_extension.dart';
 import '../../common_widget/product_cell.dart';
 import '../../common_widget/custom_navigation_bar.dart';
-import '../../common_widget/product_grid_view.dart';  // <-- import your reusable grid here
+import '../../common_widget/product_grid_view.dart'; // <-- import your reusable grid here
 import '../../view_model/home_view_model.dart';
-import 'product_details_view.dart'; // <- corrected if your file name is product_details.dart
+import 'product_details_view.dart';
 import 'package:online_groceries/common/globs.dart';
 import 'package:flutter/foundation.dart';
 import '../../model/offer_product_model.dart';
@@ -23,20 +23,14 @@ class _HomeViewState extends State<HomeView> {
   late final TextEditingController txtSearch;
   final homeVM = Get.put(HomeViewModel());
 
-  // Reactive dynamic tabs list
   final RxList<String> dynamicSectionTabs = <String>[].obs;
-
-  // Currently selected tab
   String selectedSection = "All";
 
   @override
   void initState() {
     super.initState();
     txtSearch = TextEditingController();
-
-    // Call API and then build tabs dynamically when product list updates
     homeVM.serviceCallHome();
-
     ever(homeVM.productList, (_) {
       _buildDynamicTabs();
     });
@@ -51,46 +45,35 @@ class _HomeViewState extends State<HomeView> {
 
   void _buildDynamicTabs() {
     final products = homeVM.productList;
-
-    // Extract unique, non-null, non-empty type names (case insensitive)
     final uniqueTypes = products
         .map((p) => (p.typeName ?? '').trim())
         .where((name) => name.isNotEmpty)
         .map((name) => name.toLowerCase())
         .toSet()
         .toList();
-
-    // Sort alphabetically (case insensitive)
     uniqueTypes.sort((a, b) => a.compareTo(b));
-
-    // Build tab names with formatted casing
     List<String> tabs = ["All"];
     tabs.addAll(uniqueTypes.map((name) => _capitalize(name)));
-
-    // Update reactive tab list, avoid redundant assignment to improve performance
     if (!listEquals(dynamicSectionTabs, tabs)) {
       dynamicSectionTabs.assignAll(tabs);
-      // Optional: reset selectedSection when tabs change and "All" tab is always present
       if (!dynamicSectionTabs.contains(selectedSection)) {
-        selectedSection = "All"; // reset to All if previous selection is invalid
+        selectedSection = "All";
       }
-      setState(() {}); // rebuild tab bar
+      setState(() {});
     }
   }
 
-  String _capitalize(String s) => s.isEmpty ? s : '${s[0].toUpperCase()}${s.substring(1)}';
+  String _capitalize(String s) =>
+      s.isEmpty ? s : '${s[0].toUpperCase()}${s.substring(1)}';
 
-  // Filtering products based on selectedSection
-  List <OfferProductModel> getSectionProducts(String section) {
+  List<OfferProductModel> getSectionProducts(String section) {
     final products = homeVM.productList.toList();
-
     if (section == "All") {
-      // Show all products (including those without typeName)
       return products;
     } else {
-      // Filter by matching type name case-insensitive
-      return products.where((p) =>
-          (p.typeName?.toLowerCase() ?? '') == section.toLowerCase()).toList();
+      return products
+          .where((p) => (p.typeName?.toLowerCase() ?? '') == section.toLowerCase())
+          .toList();
     }
   }
 
@@ -209,7 +192,7 @@ class _HomeViewState extends State<HomeView> {
       body: SafeArea(
         child: Stack(
           children: [
-            // BACKGROUND layer (covers upper half according to section, else white)
+            // Single background image, covers upper half for everything behind navigation/search
             FutureBuilder<String?>(
               future: sectionBgImagePath(selectedSection),
               builder: (context, snapshot) {
@@ -217,7 +200,7 @@ class _HomeViewState extends State<HomeView> {
                 return Column(
                   children: [
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.45,
+                      height: MediaQuery.of(context).size.height * 0.60,
                       width: double.infinity,
                       child: bgPath != null
                           ? Image.asset(
@@ -231,83 +214,54 @@ class _HomeViewState extends State<HomeView> {
                 );
               },
             ),
-            // FOREGROUND layer (all functional UI remains)
+
+            // Foreground UI layer—everything transparent/overlay on top of single background image
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Builder(
-                  builder: (_) {
-                    try {
-                      return const CustomNavigationBar();
-                    } catch (_) {
-                      return Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset("assets/img/color_logo.png", width: 25),
-                            ],
-                          ),
-                          const SizedBox(height: 4),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset("assets/img/location.png", width: 16, height: 16),
-                              const SizedBox(width: 8),
-                              Text(
-                                "Dhaka, Banassre",
-                                style: TextStyle(
-                                  color: TColor.darkGray,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      );
-                    }
-                  },
-                ),
+                // CustomNavigationBar should now be transparent (no bg color)
+                const CustomNavigationBar(),
+
                 const SizedBox(height: 6),
+
+                // Search bar with slight transparent white background for legibility
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Container(
-                    height: 47,
-                    decoration: BoxDecoration(
-                      color: const Color(0xffF2F3F2),
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                    alignment: Alignment.center,
-                    child: TextField(
-                      controller: txtSearch,
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.symmetric(vertical: 12),
-                        prefixIcon: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Image.asset(
-                            "assets/img/search.png",
-                            width: 18,
-                            height: 18,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(14),
+                    child: Container(
+                      height: 47,
+                      color: Colors.white.withOpacity(0.15),
+                      child: TextField(
+                        controller: txtSearch,
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.symmetric(vertical: 12),
+                          prefixIcon: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Image.asset(
+                              "assets/img/search.png",
+                              width: 18,
+                              height: 18,
+                            ),
+                          ),
+                          border: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          hintText: "Search Store",
+                          hintStyle: TextStyle(
+                            color: TColor.secondaryText,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
-                        border: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                        hintText: "Search Store",
-                        hintStyle: TextStyle(
-                          color: TColor.secondaryText,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                        ),
+                        onChanged: (value) {
+                          setState(() {});
+                        },
                       ),
-                      onChanged: (value) {
-                        // Optional: implement search filter logic here if needed
-                        setState(() {});
-                      },
                     ),
                   ),
                 ),
+
                 const SizedBox(height: 7),
 
                 buildSectionTabBar(),
@@ -325,28 +279,25 @@ class _HomeViewState extends State<HomeView> {
                       emptyMessage: "No products available in this section.",
                       onProductTap: (product) async {
                         await showModalBottomSheet(
-                        context: context,
-                        isScrollControlled: true,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-                        ),
-                        builder: (context) {
-                          final halfScreenHeight = MediaQuery.of(context).size.height * 0.7;
-
-                          return SizedBox(
-                            height: halfScreenHeight, // Limit height to half screen
-                            child: ProductDetails(
-                              pObj: product,
-                              asModalSheet: true, // Show as modal sheet
-                            ),
-                          );
-                        },
-                      );
-                        homeVM.serviceCallHome(); // Refresh after modal closes, as you already do
+                          context: context,
+                          isScrollControlled: true,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                          ),
+                          builder: (context) {
+                            final halfScreenHeight = MediaQuery.of(context).size.height * 0.7;
+                            return SizedBox(
+                              height: halfScreenHeight,
+                              child: ProductDetails(
+                                pObj: product,
+                                asModalSheet: true,
+                              ),
+                            );
+                          },
+                        );
+                        homeVM.serviceCallHome();
                       },
-                      onCart: (product) {
-                        // No-op, as before; add cart logic here if needed
-                      },
+                      onCart: (product) {},
                       scrollPhysics: const AlwaysScrollableScrollPhysics(),
                       shrinkWrap: false,
                     );
