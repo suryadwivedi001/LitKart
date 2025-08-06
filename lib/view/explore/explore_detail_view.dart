@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:online_groceries/common_widget/product_cell.dart';
+import 'package:online_groceries/common_widget/product_grid_view.dart';
+import 'package:online_groceries/model/offer_product_model.dart';
 
 import '../../common/color_extension.dart';
 import '../../model/explore_category_model.dart';
 import '../../view_model/cart_view_model.dart';
 import '../../view_model/explore_item_view_model.dart';
-import '../home/product_details_view.dart';
 import 'filter_view.dart';
 import 'package:online_groceries/common/globs.dart';
-
+import '../../view/home/product_details_view.dart';
 
 class ExploreDetailView extends StatefulWidget {
   final ExploreCategoryModel eObj;
@@ -78,51 +78,26 @@ class _ExploreDetailViewState extends State<ExploreDetailView> {
           ),
         ),
       ),
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          const double minCardWidth = 90;
-          const int maxColumns = 3;
-          const double horizontalGap = 8;
-          const double gridHorizontalPadding = 8;
+      body: Obx(() {
+        final items = listVM.listArr;
 
-          final screenWidth = constraints.maxWidth;
-          int columns = (screenWidth / (minCardWidth + horizontalGap)).floor();
-          columns = columns.clamp(2, maxColumns);
-          final totalGaps = (columns - 1) * horizontalGap;
-          final cardWidth = ((screenWidth - 2 * gridHorizontalPadding) - totalGaps) / columns;
-
-          return Obx(() => Padding(
-                padding: EdgeInsets.symmetric(horizontal: gridHorizontalPadding),
-                child: GridView.builder(
-                  padding: const EdgeInsets.symmetric(vertical: 15),
-                  itemCount: listVM.listArr.length,
-                  shrinkWrap: true,
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: columns,
-                    crossAxisSpacing: horizontalGap,
-                    mainAxisSpacing: 9, // matches HomeView spacing
-                    childAspectRatio: Globs.productCardAspectRatio,
-                  ),
-                  itemBuilder: (context, index) {
-                    var pObj = listVM.listArr[index];
-                    return ProductCell(
-                      pObj: pObj,
-                      margin: 0,
-                      weight: cardWidth,
-                      onPressed: () async {
-                        await Get.to(() => ProductDetails(pObj: pObj));
-                        listVM.serviceCallList();
-                      },
-                      onCart: () {
-                        CartViewModel.serviceCallAddToCart(pObj.prodId ?? 0, 1, () {});
-                      },
-                    );
-                  },
-                ),
-              ));
-        },
-      ),
+        return ProductGridView(
+          products: items,
+          minCardWidth: 90,
+          maxColumns: 3,
+          horizontalGap: 8,
+          gridHorizontalPadding: 8,
+          childAspectRatio: Globs.productCardAspectRatio,
+          emptyMessage: "No items available in this category.",
+          onProductTap: (product) async {
+            await Get.to(() => ProductDetails(pObj: product));
+            listVM.serviceCallList();
+          },
+          onCart: (product) {
+            CartViewModel.serviceCallAddToCart(product.prodId ?? 0, 1, () {});
+          },
+        );
+      }),
     );
   }
 }

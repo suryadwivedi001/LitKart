@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter/services.dart';
+
 import '../../common/color_extension.dart';
 import '../../common_widget/product_cell.dart';
 import '../../common_widget/custom_navigation_bar.dart';
+import '../../common_widget/product_grid_view.dart';  // <-- import your reusable grid here
 import '../../view_model/home_view_model.dart';
-import 'product_details_view.dart';
+import 'product_details_view.dart'; // <- corrected if your file name is product_details.dart
 import 'package:online_groceries/common/globs.dart';
 import 'package:flutter/foundation.dart';
-
+import '../../model/offer_product_model.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -79,7 +81,7 @@ class _HomeViewState extends State<HomeView> {
   String _capitalize(String s) => s.isEmpty ? s : '${s[0].toUpperCase()}${s.substring(1)}';
 
   // Filtering products based on selectedSection
-  List getSectionProducts(String section) {
+  List <OfferProductModel> getSectionProducts(String section) {
     final products = homeVM.productList.toList();
 
     if (section == "All") {
@@ -200,58 +202,6 @@ class _HomeViewState extends State<HomeView> {
     });
   }
 
-  Widget buildResponsiveProductGrid(List items, BoxConstraints constraints) {
-    const double minCardWidth = 90;
-    const int maxColumns = 3;
-    const double horizontalGap = 8;
-    const double gridHorizontalPadding = 8;
-    final screenWidth = constraints.maxWidth;
-    int columns = (screenWidth / (minCardWidth + horizontalGap)).floor();
-    columns = columns.clamp(2, maxColumns);
-    double totalGaps = (columns - 1) * horizontalGap;
-    double cardWidth = ((screenWidth - 2 * gridHorizontalPadding) - totalGaps) / columns;
-
-    if (items.isEmpty) {
-      return Padding(
-        padding: const EdgeInsets.all(24),
-        child: Center(
-          child: Text(
-            "No products available in this section.",
-            style: TextStyle(color: TColor.secondaryText),
-          ),
-        ),
-      );
-    }
-
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: gridHorizontalPadding),
-      child: GridView.builder(
-        itemCount: items.length,
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: columns,
-          crossAxisSpacing: horizontalGap,
-          mainAxisSpacing: 9,
-          childAspectRatio: Globs.productCardAspectRatio,
-        ),
-        itemBuilder: (context, index) {
-          final pObj = items[index];
-          return ProductCell(
-            pObj: pObj,
-            margin: 0,
-            weight: cardWidth,
-            onPressed: () async {
-              await Get.to(() => ProductDetails(pObj: pObj));
-              homeVM.serviceCallHome();
-            },
-            onCart: () {},
-          );
-        },
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -365,10 +315,21 @@ class _HomeViewState extends State<HomeView> {
                 Expanded(
                   child: Obx(() {
                     final items = getSectionProducts(selectedSection);
-                    return LayoutBuilder(
-                      builder: (context, constraints) => SingleChildScrollView(
-                        child: buildResponsiveProductGrid(items, constraints),
-                      ),
+                    return ProductGridView(
+                      products: items,
+                      minCardWidth: 90,
+                      maxColumns: 3,
+                      horizontalGap: 8,
+                      gridHorizontalPadding: 8,
+                      childAspectRatio: Globs.productCardAspectRatio,
+                      emptyMessage: "No products available in this section.",
+                      onProductTap: (product) async {
+                        await Get.to(() => ProductDetails(pObj: product));
+                        homeVM.serviceCallHome();
+                      },
+                      onCart: (product) {
+                        // No-op, as before; add cart logic here if needed
+                      },
                     );
                   }),
                 ),

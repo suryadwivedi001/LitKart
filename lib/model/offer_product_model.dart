@@ -17,6 +17,7 @@ class OfferProductModel {
   String? typeName;
   bool? isFav;
   double? avgRating;
+  bool? isVeg;
 
   // New fields for filtering
   int? isOffer;       // typically 1 or 0 from backend
@@ -43,6 +44,7 @@ class OfferProductModel {
     this.avgRating,
     this.isOffer,
     this.isBestSeller,
+    this.isVeg
   });
 
   OfferProductModel.fromJson(Map<String, dynamic> json) {
@@ -67,6 +69,7 @@ class OfferProductModel {
 
     isOffer = json['is_offer'] ?? 0;
     isBestSeller = json['is_best_seller'] ?? 0;
+    isVeg = true;
   }
 
   Map<String, dynamic> toJson() {
@@ -92,6 +95,7 @@ class OfferProductModel {
 
     data['is_offer'] = isOffer ?? 0;
     data['is_best_seller'] = isBestSeller ?? 0;
+    data['isVeg'] = isVeg ?? true;
     return data;
   }
 }
