@@ -5,10 +5,11 @@ import '../common/color_extension.dart';
 import '../common/globs.dart';
 import '../model/offer_product_model.dart';
 import '../common_widget/product_grid_view.dart';
-import '../view/home/product_details_view.dart';  // Correct import here
+import '../view/home/product_details_view.dart';
 import '../view_model/cart_view_model.dart';
 import '../view_model/splash_view_model.dart';
 import '../common_widget/floating_cart_button.dart';
+import '../common_widget/custom_navigation_bar.dart'; // Update the path if needed
 
 class OrderAgainTab extends StatefulWidget {
   const OrderAgainTab({super.key});
@@ -110,53 +111,56 @@ class _OrderAgainTabState extends State<OrderAgainTab> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: TColor.white,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-        title: Text(
-          "Order Again",
-          style: TextStyle(
-            color: TColor.primaryText,
-            fontWeight: FontWeight.w500,
-            fontSize: 14,
-          ),
-        ),
-      ),
-      body: Obx(() {
-        if (isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        if (errorMessage.value.isNotEmpty) {
-          return Center(
-            child: Text(
-              errorMessage.value,
-              style: TextStyle(color: TColor.secondaryText, fontSize: 15),
-              textAlign: TextAlign.center,
-            ),
-          );
-        }
-
-        return Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-              child: ProductGridView(
-                products: productList,
-                minCardWidth: 90,
-                maxColumns: 3,
-                horizontalGap: 8,
-                gridHorizontalPadding: 0,
-                childAspectRatio: 0.45,
-                emptyMessage: "No previously ordered products found.",
-                onProductTap: (product) => navigateToProductDetail(product),
-                onCart: (product) => addToCart(product),
+      body: Stack(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 60), // Space for nav bar
+              const SizedBox(height: 24), // Extra space below nav bar
+              Expanded(
+                child: Obx(() {
+                  if (isLoading.value) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (errorMessage.value.isNotEmpty) {
+                    return Center(
+                      child: Text(
+                        errorMessage.value,
+                        style: TextStyle(color: TColor.secondaryText, fontSize: 15),
+                        textAlign: TextAlign.center,
+                      ),
+                    );
+                  }
+                  return ProductGridView(
+                    products: productList,
+                    minCardWidth: 90,
+                    maxColumns: 3,
+                    horizontalGap: 8,
+                    gridHorizontalPadding: 16,
+                    childAspectRatio: 0.45,
+                    mainAxisSpacing: 20, // Ensures comfortable vertical spacing between cards
+                    emptyMessage: "No previously ordered products found.",
+                    onProductTap: (product) => navigateToProductDetail(product),
+                    onCart: (product) => addToCart(product),
+                  );
+                }),
               ),
-            ),
-            const FloatingCartButton(),
-          ],
-        );
-      }),
+            ],
+          ),
+
+          // Floating navigation bar
+          const Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: CustomNavigationBar(),
+          ),
+
+          // Floating cart button
+          const FloatingCartButton(),
+        ],
+      ),
     );
   }
 }

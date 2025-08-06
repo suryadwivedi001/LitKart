@@ -9,6 +9,7 @@ class ProductGridView extends StatelessWidget {
   final double horizontalGap;
   final double gridHorizontalPadding;
   final double childAspectRatio;
+  final double mainAxisSpacing;  // Added vertical spacing parameter
   final String? emptyMessage;
   final void Function(OfferProductModel)? onProductTap;
   final void Function(OfferProductModel)? onCart;
@@ -25,11 +26,12 @@ class ProductGridView extends StatelessWidget {
     this.horizontalGap = 8,
     this.gridHorizontalPadding = 8,
     this.childAspectRatio = 0.45,
+    this.mainAxisSpacing = 9,        // Default vertical spacing (can be overridden)
     this.emptyMessage = "No products found.",
     this.onProductTap,
     this.onCart,
     this.scrollPhysics,
-    this.shrinkWrap = false, // default false to allow natural scrolling
+    this.shrinkWrap = false,         // Default false to allow natural scrolling
   }) : super(key: key);
 
   @override
@@ -63,7 +65,7 @@ class ProductGridView extends StatelessWidget {
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: columns,
               crossAxisSpacing: horizontalGap,
-              mainAxisSpacing: 9,
+              mainAxisSpacing: mainAxisSpacing,     // Use configurable mainAxisSpacing
               childAspectRatio: childAspectRatio,
             ),
             itemBuilder: (context, index) {

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../common_widget/product_grid_view.dart'; // shared widget
-import '../../model/offer_product_model.dart';       // model
-import '../../view_model/cafe_view_model.dart';      // view model
-import '../home/product_details_view.dart';          // details page
+
+import '../../common_widget/product_grid_view.dart';
+import '../../model/offer_product_model.dart';
+import '../../view_model/cafe_view_model.dart';
+import '../home/product_details_view.dart';
+import '../../common_widget/custom_navigation_bar.dart'; // Update path if needed
 
 class CafeView extends StatelessWidget {
   final CafeViewModel cafeVM = Get.put(CafeViewModel());
@@ -13,27 +15,39 @@ class CafeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Cafe'),
+      body: Stack(
+        children: [
+          // Main content
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 60),           // Height of nav bar
+              const SizedBox(height: 24),           // Comfortable extra spacing below nav bar
+              Expanded(
+                child: Obx(() {
+                  final List<OfferProductModel> items = cafeVM.filteredCafeItems;
+                  return ProductGridView(
+                    products: items,
+                    onProductTap: (product) async {
+                      await Get.to(() => ProductDetails(pObj: product));
+                      cafeVM.refreshCafeList();
+                    },
+                    onCart: (product) => cafeVM.addItemToCart(product),
+                    emptyMessage: "No Cafe items available.",
+                  );
+                }),
+              ),
+            ],
+          ),
+          // Floating navigation bar at top
+          const Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: CustomNavigationBar(),
+          ),
+        ],
       ),
-      body: Obx(() {
-        // Use the getter 'filteredCafeItems' instead of a nonexistent method
-        final List<OfferProductModel> items = cafeVM.filteredCafeItems;
-
-        return ProductGridView(
-          products: items,
-          onProductTap: (product) async {
-            // Use parameter name 'product' as in ProductDetailsView constructor
-            await Get.to(() => ProductDetails(pObj: product));
-            cafeVM.refreshCafeList();  // Call the refresh method instead of loadCafeList
-          },
-          // Call the correct add-to-cart method name
-          onCart: (product) => cafeVM.addItemToCart(product),
-
-          emptyMessage: "No Cafe items available.",
-          // Customize other params if needed
-        );
-      }),
     );
   }
 }

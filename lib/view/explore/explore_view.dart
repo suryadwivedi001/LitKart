@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:online_groceries/view/explore/search_view.dart';
-
 import '../../common/color_extension.dart';
 import '../../common_widget/explore_cell.dart';
 import '../../view_model/explore_view_model.dart';
 import 'explore_detail_view.dart';
+import '../../common_widget/custom_navigation_bar.dart'; // Make sure this path is correct
 
+/// ExploreView shows a grid of products with comfortable top spacing.
 class ExploreView extends StatefulWidget {
   const ExploreView({super.key});
 
@@ -15,8 +15,6 @@ class ExploreView extends StatefulWidget {
 }
 
 class _ExploreViewState extends State<ExploreView> {
-  TextEditingController txtSearch = TextEditingController();
-
   final exploreVM = Get.put(ExploreViewModel());
 
   @override
@@ -27,96 +25,54 @@ class _ExploreViewState extends State<ExploreView> {
 
   @override
   Widget build(BuildContext context) {
-    var media = MediaQuery.sizeOf(context);
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-        title: Text(
-          "Find Products",
-          style: TextStyle(
-              color: TColor.primaryText,
-              fontSize: 13,
-              fontWeight: FontWeight.w400),
-        ),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      body: Stack(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const SearchView(),
-                  ),
-                );
-              },
-              child: Container(
-                height: 45,
-                decoration: BoxDecoration(
-                    color: const Color(0xffF2F3F2),
-                    borderRadius: BorderRadius.circular(15)),
-                alignment: Alignment.center,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(13.0),
-                      child: Image.asset(
-                        "assets/img/search.png",
-                        width: 20,
-                        height: 20,
-                      ),
+          // Main content with spacing
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 60), // for nav bar
+              const SizedBox(height: 50), // comfortable additional spacing
+              Expanded(
+                child: Obx(
+                  () => GridView.builder(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 0.95,
+                      crossAxisSpacing: 15,
+                      mainAxisSpacing: 15,
                     ),
-                    Text(
-                      "Search Store",
-                      style: TextStyle(
-                          color: TColor.secondaryText,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Expanded(
-            child: Obx(
-              () => GridView.builder(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 0.95,
-                    crossAxisSpacing: 15,
-                    mainAxisSpacing: 15),
-                itemCount: exploreVM.listArr.length,
-                itemBuilder: ((context, index) {
-                  var eObj = exploreVM.listArr[index];
-                  return ExploreCell(
-                    pObj: eObj,
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ExploreDetailView(
-                                  eObj: eObj,
-                                )),
+                    itemCount: exploreVM.listArr.length,
+                    itemBuilder: (context, index) {
+                      var eObj = exploreVM.listArr[index];
+                      return ExploreCell(
+                        pObj: eObj,
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ExploreDetailView(eObj: eObj),
+                            ),
+                          );
+                        },
                       );
                     },
-                  );
-                }),
+                  ),
+                ),
               ),
-            ),
-          )
+            ],
+          ),
+          // Floating nav bar
+          const Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: CustomNavigationBar(),
+          ),
         ],
       ),
     );
