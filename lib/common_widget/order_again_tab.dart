@@ -117,7 +117,7 @@ class _OrderAgainTabState extends State<OrderAgainTab> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 60), // Space for nav bar
-              const SizedBox(height: 24), // Extra space below nav bar
+              const SizedBox(height: 60), // Extra space below nav bar
               Expanded(
                 child: Obx(() {
                   if (isLoading.value) {

@@ -34,7 +34,7 @@ class _ExploreViewState extends State<ExploreView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 60), // for nav bar
-              const SizedBox(height: 50), // comfortable additional spacing
+              const SizedBox(height: 100), // comfortable additional spacing
               Expanded(
                 child: Obx(
                   () => GridView.builder(

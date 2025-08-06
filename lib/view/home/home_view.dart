@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter/services.dart';
-
 import '../../common/color_extension.dart';
 import '../../common_widget/product_cell.dart';
 import '../../common_widget/custom_navigation_bar.dart';
-import '../../common_widget/product_grid_view.dart'; // <-- import your reusable grid here
+import '../../common_widget/product_grid_view.dart';
 import '../../view_model/home_view_model.dart';
 import 'product_details_view.dart';
 import 'package:online_groceries/common/globs.dart';
@@ -20,16 +19,14 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  late final TextEditingController txtSearch;
   final homeVM = Get.put(HomeViewModel());
-
   final RxList<String> dynamicSectionTabs = <String>[].obs;
   String selectedSection = "All";
+  String _currentSearch = ""; // For optional filtering
 
   @override
   void initState() {
     super.initState();
-    txtSearch = TextEditingController();
     homeVM.serviceCallHome();
     ever(homeVM.productList, (_) {
       _buildDynamicTabs();
@@ -38,7 +35,6 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   void dispose() {
-    txtSearch.dispose();
     Get.delete<HomeViewModel>();
     super.dispose();
   }
@@ -68,13 +64,17 @@ class _HomeViewState extends State<HomeView> {
 
   List<OfferProductModel> getSectionProducts(String section) {
     final products = homeVM.productList.toList();
-    if (section == "All") {
-      return products;
-    } else {
-      return products
-          .where((p) => (p.typeName?.toLowerCase() ?? '') == section.toLowerCase())
+    List<OfferProductModel> filtered = section == "All"
+        ? products
+        : products
+            .where((p) => (p.typeName?.toLowerCase() ?? '') == section.toLowerCase())
+            .toList();
+    if (_currentSearch.isNotEmpty) {
+      filtered = filtered
+          .where((p) => (p.name ?? '').toLowerCase().contains(_currentSearch.toLowerCase()))
           .toList();
     }
+    return filtered;
   }
 
   String sectionToKey(String section) =>
@@ -192,7 +192,7 @@ class _HomeViewState extends State<HomeView> {
       body: SafeArea(
         child: Stack(
           children: [
-            // Single background image, covers upper half for everything behind navigation/search
+            // Background image layer (unchanged)
             FutureBuilder<String?>(
               future: sectionBgImagePath(selectedSection),
               builder: (context, snapshot) {
@@ -215,54 +215,20 @@ class _HomeViewState extends State<HomeView> {
               },
             ),
 
-            // Foreground UI layer—everything transparent/overlay on top of single background image
+            // Foreground UI
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // CustomNavigationBar should now be transparent (no bg color)
-                const CustomNavigationBar(),
-
-                const SizedBox(height: 6),
-
-                // Search bar with slight transparent white background for legibility
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(14),
-                    child: Container(
-                      height: 47,
-                      color: Colors.white.withOpacity(0.15),
-                      child: TextField(
-                        controller: txtSearch,
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.symmetric(vertical: 12),
-                          prefixIcon: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Image.asset(
-                              "assets/img/search.png",
-                              width: 18,
-                              height: 18,
-                            ),
-                          ),
-                          border: InputBorder.none,
-                          enabledBorder: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          hintText: "Search Store",
-                          hintStyle: TextStyle(
-                            color: TColor.secondaryText,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        onChanged: (value) {
-                          setState(() {});
-                        },
-                      ),
-                    ),
-                  ),
+                // CustomNavigationBar with search embedded, callback wired
+                CustomNavigationBar(
+                  onSearchChanged: (newSearch) {
+                    setState(() {
+                      _currentSearch = newSearch;
+                    });
+                  },
                 ),
 
-                const SizedBox(height: 7),
+                const SizedBox(height: 0), // Space after nav bar
 
                 buildSectionTabBar(),
 
@@ -274,7 +240,8 @@ class _HomeViewState extends State<HomeView> {
                       minCardWidth: 90,
                       maxColumns: 3,
                       horizontalGap: 8,
-                      gridHorizontalPadding: 8,
+                      gridHorizontalPadding: 16,
+                      mainAxisSpacing: 20,
                       childAspectRatio: Globs.productCardAspectRatio,
                       emptyMessage: "No products available in this section.",
                       onProductTap: (product) async {

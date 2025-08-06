@@ -22,7 +22,7 @@ class CafeView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 60),           // Height of nav bar
-              const SizedBox(height: 24),           // Comfortable extra spacing below nav bar
+              const SizedBox(height: 60),           // Comfortable extra spacing below nav bar
               Expanded(
                 child: Obx(() {
                   final List<OfferProductModel> items = cafeVM.filteredCafeItems;
