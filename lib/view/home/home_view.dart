@@ -324,12 +324,31 @@ class _HomeViewState extends State<HomeView> {
                       childAspectRatio: Globs.productCardAspectRatio,
                       emptyMessage: "No products available in this section.",
                       onProductTap: (product) async {
-                        await Get.to(() => ProductDetails(pObj: product));
-                        homeVM.serviceCallHome();
+                        await showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                        ),
+                        builder: (context) {
+                          final halfScreenHeight = MediaQuery.of(context).size.height * 0.7;
+
+                          return SizedBox(
+                            height: halfScreenHeight, // Limit height to half screen
+                            child: ProductDetails(
+                              pObj: product,
+                              asModalSheet: true, // Show as modal sheet
+                            ),
+                          );
+                        },
+                      );
+                        homeVM.serviceCallHome(); // Refresh after modal closes, as you already do
                       },
                       onCart: (product) {
                         // No-op, as before; add cart logic here if needed
                       },
+                      scrollPhysics: const AlwaysScrollableScrollPhysics(),
+                      shrinkWrap: false,
                     );
                   }),
                 ),

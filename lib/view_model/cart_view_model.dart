@@ -23,6 +23,8 @@ class CartViewModel extends GetxController {
   final deliveryType = "1".obs;
   final paymentType = "1".obs;
 
+  
+
   @override
   void onInit() {
     // TODO: implement onInit
@@ -148,7 +150,7 @@ class CartViewModel extends GetxController {
     });
   }
 
-  static void serviceCallAddToCart(int prodId, int qty, VoidCallback didDone) {
+  static Future<void> serviceCallAddToCart(int prodId, int qty, VoidCallback didDone) async {
     Globs.showHUD();
     ServiceCall.post({
       "prod_id": prodId.toString(),

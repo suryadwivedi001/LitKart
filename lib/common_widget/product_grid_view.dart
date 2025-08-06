@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../model/offer_product_model.dart'; // or use a generic type with a builder, see below
+import '../model/offer_product_model.dart';
 import 'product_cell.dart';
 
 class ProductGridView extends StatelessWidget {
@@ -13,6 +13,10 @@ class ProductGridView extends StatelessWidget {
   final void Function(OfferProductModel)? onProductTap;
   final void Function(OfferProductModel)? onCart;
 
+  /// Optional parameters to control scrolling behavior of the grid
+  final ScrollPhysics? scrollPhysics;
+  final bool shrinkWrap;
+
   const ProductGridView({
     Key? key,
     required this.products,
@@ -24,6 +28,8 @@ class ProductGridView extends StatelessWidget {
     this.emptyMessage = "No products found.",
     this.onProductTap,
     this.onCart,
+    this.scrollPhysics,
+    this.shrinkWrap = false, // default false to allow natural scrolling
   }) : super(key: key);
 
   @override
@@ -42,7 +48,7 @@ class ProductGridView extends StatelessWidget {
             child: Center(
               child: Text(
                 emptyMessage ?? "No products found.",
-                style: const TextStyle(color: Colors.grey), // Or your TColor.secondaryText
+                style: const TextStyle(color: Colors.grey),
               ),
             ),
           );
@@ -52,8 +58,8 @@ class ProductGridView extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: gridHorizontalPadding),
           child: GridView.builder(
             itemCount: products.length,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: shrinkWrap,
+            physics: scrollPhysics ?? const AlwaysScrollableScrollPhysics(),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: columns,
               crossAxisSpacing: horizontalGap,

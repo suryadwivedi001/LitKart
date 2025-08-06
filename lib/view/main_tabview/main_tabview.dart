@@ -127,7 +127,7 @@ class _MainTabViewState extends State<MainTabView>
                 ),
               ),
               Tab(
-                text: "Order Again",
+                text: "Favourites",
                 icon: Image.asset(
                   "assets/img/order_again_tab.png",
                   width: 25,
