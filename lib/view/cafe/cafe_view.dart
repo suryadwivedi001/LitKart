@@ -29,8 +29,24 @@ class CafeView extends StatelessWidget {
                   return ProductGridView(
                     products: items,
                     onProductTap: (product) async {
-                      await Get.to(() => ProductDetails(pObj: product));
-                      cafeVM.refreshCafeList();
+                      await showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                        ),
+                        builder: (context) {
+                          final halfScreenHeight = MediaQuery.of(context).size.height * 0.7;
+                          return SizedBox(
+                            height: halfScreenHeight,
+                            child: ProductDetails(
+                              pObj: product,
+                              asModalSheet: true,
+                            ),
+                          );
+                        },
+                      );
+                      cafeVM.refreshCafeList(); // Refresh list after close, if you want
                     },
                     onCart: (product) => cafeVM.addItemToCart(product),
                     emptyMessage: "No Cafe items available.",

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:online_groceries/common_widget/product_grid_view.dart';
-import 'package:online_groceries/model/offer_product_model.dart';
-
 import '../../common/color_extension.dart';
 import '../../model/explore_category_model.dart';
+import '../../model/offer_product_model.dart'; // Ensure this import is here for strong typing
 import '../../view_model/cart_view_model.dart';
 import '../../view_model/explore_item_view_model.dart';
 import 'filter_view.dart';
@@ -79,7 +78,8 @@ class _ExploreDetailViewState extends State<ExploreDetailView> {
         ),
       ),
       body: Obx(() {
-        final items = listVM.listArr;
+        // Cast to strongly typed List<OfferProductModel>
+        final List<OfferProductModel> items = listVM.listArr.cast<OfferProductModel>().toList();
 
         return ProductGridView(
           products: items,
@@ -90,7 +90,23 @@ class _ExploreDetailViewState extends State<ExploreDetailView> {
           childAspectRatio: Globs.productCardAspectRatio,
           emptyMessage: "No items available in this category.",
           onProductTap: (product) async {
-            await Get.to(() => ProductDetails(pObj: product));
+            await showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+              ),
+              builder: (context) {
+                final trayHeight = MediaQuery.of(context).size.height * 0.7;
+                return SizedBox(
+                  height: trayHeight,
+                  child: ProductDetails(
+                    pObj: product,
+                    asModalSheet: true,
+                  ),
+                );
+              },
+            );
             listVM.serviceCallList();
           },
           onCart: (product) {

@@ -141,7 +141,27 @@ class _OrderAgainTabState extends State<OrderAgainTab> {
                     childAspectRatio: 0.45,
                     mainAxisSpacing: 20, // Ensures comfortable vertical spacing between cards
                     emptyMessage: "No previously ordered products found.",
-                    onProductTap: (product) => navigateToProductDetail(product),
+                    onProductTap: (product) async {
+                      await showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                        ),
+                        builder: (context) {
+                          final halfScreenHeight = MediaQuery.of(context).size.height * 0.7;
+                          return SizedBox(
+                            height: halfScreenHeight,
+                            child: ProductDetails(
+                              pObj: product,
+                              asModalSheet: true,
+                            ),
+                          );
+                        },
+                      );
+                      // If needed, refresh data after modal closes:
+                      // homeVM.serviceCallHome(); // (Optional)
+},
                     onCart: (product) => addToCart(product),
                   );
                 }),
